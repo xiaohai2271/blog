@@ -1,0 +1,11 @@
+.idea/
+*.iml
+back-end/blog-dev.sql
+back-end/src/test
+back-end/target
+back-end/src/main/resources/application-prod.properties
+back-end/src/main/resources/application-dev.properties
+
+dist
+node_modules
+.editorconfig
