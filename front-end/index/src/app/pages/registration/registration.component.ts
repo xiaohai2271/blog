@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router';
 import {NzMessageService} from 'ng-zorro-antd';
-import {Title} from '@angular/platform-browser';
 import {UserService} from '../../services/user/user.service';
 import {environment} from '../../../environments/environment';
 import {LoginReq} from '../../class/loginReq';
@@ -28,25 +26,17 @@ export class RegistrationComponent implements OnInit {
   public imgCodeStatus: boolean;
 
   constructor(public userService: UserService,
-              private routerinfo: ActivatedRoute,
               private router: Router,
-              private message: NzMessageService,
-              private titleService: Title) {
-    titleService.setTitle('小海博客|注册');
+              private message: NzMessageService) {
   }
-
-
-  orginalUrl: string = null;
 
   ngOnInit() {
     window.scrollTo(0, 0);
-    this.orginalUrl = this.routerinfo.snapshot.queryParams.url;
   }
 
   changeImg() {
     this.imgCodeUrl = environment.host + '/imgCode?time=' + (new Date()).getTime();
   }
-
 
   /**
    * 验证码验证
@@ -86,17 +76,17 @@ export class RegistrationComponent implements OnInit {
           this.userService.tempUser.email = this.email;
           this.userService.tempUser.password = this.password;
           // 注册成功
-          this.message.success('注册成功，3秒钟后转跳登录页面.');
+          this.message.success('注册成功!');
           setTimeout(() => {
-            this.router.navigateByUrl('/login');
-          }, 3000);
+            // 换成登录的modal
+            this.userService.loginModalType = 'login';
+          }, 300);
         } else {
           this.message.error('注册失败，原因：' + data.msg);
         }
       });
     } else {
       document.getElementById('verifyImgCode').focus();
-
     }
   }
 }

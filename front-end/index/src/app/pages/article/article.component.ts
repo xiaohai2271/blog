@@ -87,16 +87,21 @@ export class ArticleComponent implements OnInit {
    */
   getArticle() {
     this.articleService.getArticleById(this.articleId).subscribe(data => {
-      // 清空远先的markdown 内容
-      document.getElementById('content').innerHTML = '';
-      this.article = data.result;
-      this.preview(data.result.mdContent);
-      window.scrollTo(0, 0);
-      this.titleService.setTitle(data.result.title);
-      // 修改url栏的地址
-      this.location.replaceState('article/' + data.result.id);
-      this.copyRightUrl = location.href;
-      this.loadOk = true;
+      if (data.code === 0) {
+        // 清空远先的markdown 内容
+        document.getElementById('content').innerHTML = '';
+        this.article = data.result;
+        this.preview(data.result.mdContent);
+        window.scrollTo(0, 0);
+        this.titleService.setTitle(data.result.title);
+        // 修改url栏的地址
+        this.location.replaceState('article/' + data.result.id);
+        this.copyRightUrl = location.href;
+        this.loadOk = true;
+      } else if (data.code === 201) {
+        // 文章不存在
+        this.router.navigateByUrl('404');
+      }
     });
   }
 

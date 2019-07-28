@@ -1,9 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router';
-import {Title} from '@angular/platform-browser';
 import {UserService} from '../../services/user/user.service';
-import {da_DK, NzMessageService} from 'ng-zorro-antd';
+import {NzMessageService} from 'ng-zorro-antd';
 import {LoginReq} from '../../class/loginReq';
 
 @Component({
@@ -16,21 +15,17 @@ export class LoginComponent implements OnInit {
   constructor(public userService: UserService,
               private routerinfo: ActivatedRoute,
               private router: Router,
-              private message: NzMessageService,
-              private titleService: Title) {
-    titleService.setTitle('小海博客|登录');
+              private message: NzMessageService) {
   }
 
   public submitBody: LoginReq = new LoginReq();
 
-  orginalUrl: string = null;
 
   showForgetPwd: boolean = false;
 
   email4Forgot: string;
 
   ngOnInit() {
-    this.orginalUrl = this.routerinfo.snapshot.queryParams.url;
     window.scrollTo(0, 0);
     if (this.userService.tempUser) {
       this.submitBody.email = this.userService.tempUser.email;
@@ -50,18 +45,18 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    const regExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    if (!regExp.test(this.submitBody.email)) {
+      this.message.error('邮箱格式不合法');
+      return;
+    }
+
     this.userService.login(this.submitBody).subscribe(data => {
       if (data.code === 0) {
+        // 登录成功
         // 置空
         this.userService.tempUser = null;
-        // 登录成功
-        if (this.orginalUrl == null) {
-          // 源链接为空
-          window.location.href = '/admin/';
-        } else {
-          // 源链接不为空
-          this.router.navigateByUrl(this.orginalUrl);
-        }
+        this.message.success('登录成功，欢迎你' + data.result.displayName);
       } else {
         // 登录失败
         this.message.error('登录失败，原因：' + data.msg);

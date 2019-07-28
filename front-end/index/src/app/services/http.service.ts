@@ -3,7 +3,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {Data} from '../class/data';
-import {da_DK} from 'ng-zorro-antd';
 
 @Injectable({
   providedIn: 'root'

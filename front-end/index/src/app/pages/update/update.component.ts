@@ -20,6 +20,9 @@ export class UpdateComponent implements OnInit {
       this.updateService.getUpdateInfo();
     }
     window.scrollTo(0, 0);
+    if (!this.updateService.lastestUpdateTime) {
+      this.updateService.getLastestUpdateTime();
+    }
   }
 
 }

@@ -37,7 +37,7 @@
         <div class="br-text">
           <p>
             <span>已有账号了?</span>
-            <a [routerLink]="[ '/login']">登录</a>
+            <a (click)="userService.showModal('login')">登录</a>
           </p>
         </div>
 

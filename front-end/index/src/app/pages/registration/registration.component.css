@@ -1,12 +1,5 @@
 .main {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  width: 500px;
-  height: 400px;
-  transform: translate(-50%,0);
-  background: #ffffff;
-  border-radius: 10px;
+  width: 100%;
 }
 
 .ioc_text {
@@ -86,10 +79,4 @@ a {
 
 .loading span {
   display: block;
-}
-
-@media only screen and ( max-width: 768px ) {
-  .main {
-    width: 100%;
-  }
 }

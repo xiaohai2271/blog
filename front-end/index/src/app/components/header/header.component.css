@@ -67,6 +67,12 @@ ul {
   font-size: 10px;
 }
 
+[nz-button] {
+  margin-right: 8px;
+  margin-top: 9px;
+  border-radius: 8px;
+}
+
 @media only screen and (min-width: 768px) {
   /**导航栏*/
   .nav-desktop {

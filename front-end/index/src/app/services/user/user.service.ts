@@ -16,6 +16,16 @@ export class UserService {
   // 刚注册完账户 实现自动填充账户的临时存储  登录成功即置空
   tempUser: LoginReq;
 
+  loginModalType: 'login' | 'registration' = 'login';
+  loginModalVisible: boolean = false;
+
+
+  showModal(type: 'login' | 'registration') {
+    this.loginModalType = type;
+    this.loginModalVisible = true;
+  }
+
+
   /**
    * 获取用户信息
    */
@@ -53,6 +63,7 @@ export class UserService {
     observable.subscribe((data: any) => {
       if (data.code === 0) {
         this.userInfo = data.result;
+        this.loginModalVisible = false;
       }
     });
     return observable;
@@ -64,6 +75,7 @@ export class UserService {
       password: pwd
     };
     return this.http.post('/registration', submitBody, false);
+    //  注册成功 ->  登录 在component里面实现了
   }
 
 

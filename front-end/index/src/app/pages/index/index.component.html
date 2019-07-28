@@ -1,8 +1,7 @@
 <div class="container">
 
 
-
-  <h2 *ngIf="!articleService.currentPage">暂时还未发布文章.</h2>
+  <h2 *ngIf="!articleService.currentPage" style="width: 100%;text-align: center">.暂时还未发布文章.</h2>
 
   <div class="right" *ngIf="articleService.currentPage">
     <nz-card class="article am-animation-slide-right" *ngFor="let article of articleService.currentPage.list"
@@ -16,23 +15,26 @@
           <span class="aType"
                 [ngClass]="{'aTypeOriginal': article.original,'aTypeReprint':!article.original}">{{article.original ? "原创" : "转载"}}</span>
         </li>
-        <li><i class="far fa-calendar-alt"></i>{{article.publishDateFormat}}</li>
-        <li><i class="fas fa-user"></i>{{article.authorName}}</li>
-        <li><i class="fas fa-folder"></i>
+        <li><i nz-icon nzType="calendar" nzTheme="outline"></i>{{article.publishDateFormat}}</li>
+        <li><i nz-icon nzType="user" nzTheme="outline"></i>{{article.authorName}}</li>
+        <li><i nz-icon nzType="folder" nzTheme="outline"></i>
           <a [routerLink]="['/category']" [queryParams]="{'name':article.category}">
-            <span>{{article.category}}</span></a>
+            <span>{{article.category}}</span>
+          </a>
         </li>
       </ul>
       <div class="aSummary">
         {{article.summary}}
       </div>
-      <a [routerLink]="'/article/'+article.id" style="font-size: 1.2em;">阅读全文&nbsp;<i
-        class="fas fa-angle-double-right"></i></a>
+      <a [routerLink]="'/article/'+article.id" style="font-size: 1.2em;">
+        阅读全文
+        <i nz-icon nzType="double-right" nzTheme="outline"></i>
+      </a>
       <hr>
       <div class="tags">
                 <span *ngFor="let item of article.tags">
-                    <i class="fas fa-tag"></i>&nbsp;<a [routerLink]="['/tag']"
-                                                       [queryParams]="{name:item}">{{item}}</a>&nbsp;&nbsp;
+                    <i nz-icon nzType="tag" nzTheme="outline"></i>&nbsp;
+                    <a [routerLink]="['/tag']" [queryParams]="{name:item}">{{item}}</a>&nbsp;&nbsp;
                 </span>
       </div>
     </nz-card>
@@ -57,14 +59,14 @@
         </div>
         <div class="about-contact">
           <button class="about-contact-icon" (mouseenter)="showWxImg()" (mouseleave)="reset()">
-            <i class="fab fa-weixin"></i>
+            <i nz-icon nzType="wechat" nzTheme="outline"></i>
           </button>
           <button class="about-contact-icon" (mouseenter)="showQQImg()" (mouseleave)="reset()">
-            <i class="fab fa-qq "></i>
+            <i nz-icon nzType="qq" nzTheme="outline"></i>
           </button>
           <a href="https://github.com/xiaohai2271">
             <button class="about-contact-icon">
-              <i class="fab fa-github "></i>
+              <i nz-icon nzType="github" nzTheme="outline"></i>
             </button>
           </a>
         </div>
@@ -93,27 +95,22 @@
       <span class="title">网站信息</span>
       <hr>
       <div style="margin: 15px;" *ngIf="countService.count">
-        <ul class="site-default">
-          <li><i class="fas fa-newspaper site-default-icon"></i><span
-            class="site-default-word">文章总数</span>：{{countService.count.articleCount}} 篇
+        <ul class="countInfo">
+          <li><i nz-icon nzType="file" nzTheme="outline"></i><span>文章总数</span>：{{countService.count.articleCount}} 篇
           </li>
-          <li><i class="fas fa-tags site-default-icon"></i><span
-            class="site-default-word">标签总数</span>：{{countService.count.tagCount}} 个
+          <li><i nz-icon nzType="tags" nzTheme="outline"></i><span>标签总数</span>：{{countService.count.tagCount}} 个
           </li>
-          <li><i class="fas fa-comments site-default-icon"></i><span
-            class="site-default-word">留言总数</span>：{{countService.count.leaveMsgCount}} 条
+          <li><i nz-icon nzType="profile" nzTheme="outline"></i><span>留言总数</span>：{{countService.count.leaveMsgCount}} 条
           </li>
-          <li><i class="fas fa-comment site-default-icon"></i><span
-            class="site-default-word">评论总数</span>：{{countService.count.commentCount}} 条
+          <li><i nz-icon nzType="message" nzTheme="outline"></i><span>评论总数</span>：{{countService.count.commentCount}} 条
           </li>
-          <li><i class="fas fa-eye  site-default-icon"></i><span
-            class="site-default-word">总访客量</span>：{{countService.count.visitorCount}} 条
+          <li><i nz-icon nzType="eye" nzTheme="outline"></i><span>总访客量</span>：{{countService.count.visitorCount}} 条
           </li>
-          <li><i class="fas fa-blog site-default-icon"></i><span class="site-default-word">最后更新</span>：<span
+          <li><i nz-icon nzType="arrow-up" nzTheme="outline"></i><span>最后更新</span>：<span
             class="siteUpdateTime">{{webUpdateService.lastestUpdateTime}}</span></li>
         </ul>
       </div>
-      <div *ngIf="!countService.count"><h2>暂无更多信息</h2></div>
+      <div *ngIf="!countService.count" style="margin-left: 15px;">暂无更多信息</div>
     </div>
 
   </div>

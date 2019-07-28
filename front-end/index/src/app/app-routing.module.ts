@@ -11,8 +11,6 @@ import {ArticleComponent} from './pages/article/article.component';
 import {EmailVerifyComponent} from './pages/email-verify/email-verify.component';
 import {ResetPwdComponent} from './pages/reset-pwd/reset-pwd.component';
 import {NotFoundComponent} from './pages/not-found/not-found.component';
-import {LoginComponent} from './pages/login/login.component';
-import {RegistrationComponent} from './pages/registration/registration.component';
 import {WriteComponent} from './pages/write/write.component';
 
 const routes: Routes = [
@@ -26,8 +24,6 @@ const routes: Routes = [
   {path: 'write', component: WriteComponent},
   {path: 'resetPwd', component: ResetPwdComponent},
   {path: 'emailVerify', component: EmailVerifyComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'registration', component: RegistrationComponent},
   {path: '404', component: NotFoundComponent},
   {path: '**', redirectTo: '404'}
 ];

@@ -12,14 +12,14 @@
         </div>
 
         <div class="site-inner-mywords">
-          <p><i class="fas fa-quote-left " style="float: left"></i></p><br>
+          <br>
           <div class="word">
             过自己喜欢的生活，<br><br>
             <p>做自己喜欢的人</p><br>
             <p>不以物喜</p>
             <p>不以己悲</p>
           </div>
-          <p><i class="fas fa-quote-right" style="float: right;"></i></p><br>
+          <br>
         </div>
 
       </div>
@@ -28,14 +28,14 @@
         <div class="zh-update-log">
           <div class="zh-update-log-title">
             <h1>更新日志</h1>
-            <p>发布于 {{updateService.lastestUpdateTime}}</p>
+            <p>最后更新于 {{updateService.lastestUpdateTime}}</p>
           </div>
           <div class="zh-update-log-content">
 
 
             <div class="update-log am-animation-slide-bottom" *ngFor="let update of updateService.updateInfoList">
               <div class="update-log-date">
-                <i class="fas fa-hashtag"></i>
+                <i nz-icon nzType="star" nzTheme="twotone" nzTwotoneColor="#eb2f96" class="titleTag"></i>
                 <h2>{{update.time}}</h2>
               </div>
               <div class="update-log-content">

@@ -1,7 +1,8 @@
 <div>
 
-  <span *ngIf="!userService.userInfo" style="display: block;text-align: center">若要评论，请先<a
-    style="color: blue !important;" [routerLink]="[ '/login']" [queryParams]="{url:'leaveMsg'}">登录</a>哟~~~~</span>
+  <span *ngIf="!userService.userInfo" style="display: block;text-align: center">
+    若要评论，请先<a style="color: blue !important;" (click)="userService.showModal('login')">登录</a>哟~~~~
+  </span>
   <nz-comment *ngIf="userService.userInfo" style="width: 60%;margin:15px auto">
     <nz-comment-content>
       <nz-form-item>

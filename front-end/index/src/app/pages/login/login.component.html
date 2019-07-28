@@ -1,7 +1,7 @@
 <div class="main">
   <div class="main-content">
     <form>
-      <h2>小海</h2>
+      <h1 style="text-align: center"><strong>小海</strong></h1>
       <label for="email">邮箱:</label>
       <br>
       <input type="email" name="email" id="email" value="" [(ngModel)]="submitBody.email">
@@ -17,7 +17,7 @@
       <div class="br-text">
         <p>
           <span>还没有账号?</span>
-          <a style="color: blue" routerLink="/registration">注册</a>
+          <a style="color: blue" (click)="userService.showModal('registration')">注册</a>
         </p>
       </div>
       <br/>

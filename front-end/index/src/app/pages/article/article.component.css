@@ -88,7 +88,6 @@ hr {
 }
 
 .article-text {
-  margin: 0% 5% 0% 5%;
   word-break: break-all
 }
 
@@ -137,10 +136,7 @@ hr {
 }
 
 .comment-list {
-  margin-top: 50px;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-bottom: 20px;
+  margin: 50px 10% 20px;
 }
 
 .comment-input {
@@ -267,17 +263,25 @@ p {
   word-break: break-all
 }
 
-button{
+button {
   padding-left: 8px;
   padding-right: 8px;
 }
-textarea{
+
+textarea {
   padding: 8px;
 }
 
 @media only screen and (max-width: 768px) {
   .article-content {
     width: 100%;
-    background: #ececec
+    margin-top: -80px;
+    padding-top: 60px;
+    border-radius: 0;
   }
+
+  #content {
+    padding: 0 8px;
+  }
+
 }

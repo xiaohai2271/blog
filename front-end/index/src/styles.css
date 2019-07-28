@@ -19,3 +19,7 @@ li {
 hr {
   opacity: 0.4;
 }
+
+.titleTag {
+  font-size: 18px;
+}

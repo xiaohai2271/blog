@@ -10,9 +10,9 @@
             <span class="arType"
                   [ngClass]="{'arTypeOriginal': article.original,'arTypeReprint':!article.original}">{{article.original ? "原创" : "转载"}}</span>
         </li>
-        <li><i class="far fa-calendar-alt"></i>{{article.publishDateFormat}}</li>
-        <li><i class="fas fa-user"></i>{{article.authorName}}</li>
-        <li><i class="fas fa-folder"></i>
+        <li><i nz-icon nzType="calendar" nzTheme="outline"></i>{{article.publishDateFormat}}</li>
+        <li><i nz-icon nzType="user" nzTheme="outline"></i>{{article.authorName}}</li>
+        <li><i nz-icon nzType="folder" nzTheme="outline"></i>
           <a [routerLink]="['/category']" [queryParams]="{'name':article.category}">
             <span>{{article.category}}</span></a>
         </li>
@@ -61,7 +61,8 @@
       <br/>
 
       <span *ngIf="!userService.userInfo" style="display: block;text-align: center">若要评论，请先
-    <a style="color: blue !important;text-decoration: underline" [routerLink]="[ '/login']">登录</a>哟~~~~</span>
+    <a style="color: blue !important;text-decoration: underline"
+       (click)="userService.showModal('login')">登录</a>哟~~~~</span>
       <nz-comment *ngIf="userService.userInfo" style="width: 60%;margin:15px auto">
         <nz-comment-content>
           <nz-form-item>
