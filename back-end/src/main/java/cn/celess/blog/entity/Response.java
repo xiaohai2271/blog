@@ -1,8 +1,7 @@
 package cn.celess.blog.entity;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import net.sf.json.JSONObject;
 
 import java.io.Serializable;
 
@@ -27,4 +26,9 @@ public class Response implements Serializable {
         this.date = date;
     }
 
+    @Override
+    public String toString() {
+        JSONObject jsonObject = JSONObject.fromObject(this);
+        return jsonObject.toString();
+    }
 }
