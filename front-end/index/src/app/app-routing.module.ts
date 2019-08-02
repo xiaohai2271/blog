@@ -12,6 +12,8 @@ import {EmailVerifyComponent} from './pages/email-verify/email-verify.component'
 import {ResetPwdComponent} from './pages/reset-pwd/reset-pwd.component';
 import {NotFoundComponent} from './pages/not-found/not-found.component';
 import {WriteComponent} from './pages/write/write.component';
+import {LoginComponent} from './pages/login/login.component';
+import {RegistrationComponent} from './pages/registration/registration.component';
 
 const routes: Routes = [
   {path: '', component: IndexComponent},
@@ -24,8 +26,10 @@ const routes: Routes = [
   {path: 'write', component: WriteComponent},
   {path: 'resetPwd', component: ResetPwdComponent},
   {path: 'emailVerify', component: EmailVerifyComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'registration', component: RegistrationComponent},
   {path: '404', component: NotFoundComponent},
-  {path: '**', redirectTo: '404'}
+  {path: '**', component: NotFoundComponent}
 ];
 
 // TODO lazyLoad

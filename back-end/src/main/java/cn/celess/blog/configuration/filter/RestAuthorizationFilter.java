@@ -10,6 +10,7 @@ import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
@@ -22,6 +23,8 @@ public class RestAuthorizationFilter extends PermissionsAuthorizationFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
         Boolean jsonRes = true;
+        ((HttpServletResponse) response).setHeader("access-control-allow-origin", "https://www.celess.cn");
+        ((HttpServletResponse) response).setHeader("Access-Control-Allow-Credentials","true");
         response.setContentType("application/Json");
         response.setCharacterEncoding("utf-8");
         Subject subject = this.getSubject(request, response);

@@ -5,14 +5,11 @@ import cn.celess.blog.entity.Response;
 import cn.celess.blog.entity.model.ArticleModel;
 import cn.celess.blog.entity.request.ArticleReq;
 import cn.celess.blog.service.ArticleService;
-import cn.celess.blog.service.TagService;
-import cn.celess.blog.service.UserService;
 import cn.celess.blog.util.GetUserInfoBySessionUtil;
 import cn.celess.blog.util.ResponseUtil;
+import cn.celess.blog.util.SitemapGenerateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author : xiaohai
@@ -23,11 +20,7 @@ public class ArticleController {
     @Autowired
     ArticleService articleService;
     @Autowired
-    UserService userService;
-    @Autowired
-    TagService tagService;
-    @Autowired
-    HttpServletRequest request;
+    SitemapGenerateUtil sitemapGenerateUtil;
 
     /**
      * 新建一篇文章
@@ -37,7 +30,9 @@ public class ArticleController {
      */
     @PostMapping("/admin/article/create")
     public Response create(@RequestBody ArticleReq body) {
-        return ResponseUtil.success(articleService.create(body));
+        ArticleModel articleModel = articleService.create(body);
+        sitemapGenerateUtil.createSitemap();
+        return ResponseUtil.success(articleModel);
     }
 
     /**
@@ -48,7 +43,9 @@ public class ArticleController {
      */
     @DeleteMapping("/admin/article/del")
     public Response delete(@RequestParam("articleID") long articleId) {
-        return ResponseUtil.success(articleService.delete(articleId));
+        boolean delete = articleService.delete(articleId);
+        sitemapGenerateUtil.createSitemap();
+        return ResponseUtil.success(delete);
     }
 
     /**
@@ -59,7 +56,9 @@ public class ArticleController {
      */
     @PutMapping("/admin/article/update")
     public Response update(@RequestBody ArticleReq body) {
-        return ResponseUtil.success(articleService.update(body));
+        ArticleModel update = articleService.update(body);
+        sitemapGenerateUtil.createSitemap();
+        return ResponseUtil.success(update);
     }
 
     /**
@@ -141,4 +140,10 @@ public class ArticleController {
         return ResponseUtil.success(articleService.findByTag(name, page, count));
     }
 
+
+    @GetMapping("/createSitemap")
+    public Response createSitemap() {
+        sitemapGenerateUtil.createSitemap();
+        return ResponseUtil.success(null);
+    }
 }

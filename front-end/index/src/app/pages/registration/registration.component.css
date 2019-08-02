@@ -1,5 +1,9 @@
 .main {
-  width: 100%;
+  width: 500px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .ioc_text {
@@ -22,6 +26,7 @@ input {
   background: #fafafa;
   border: 1px solid #ddd;
   border-radius: 4px;
+  padding-left: 5px;
 }
 
 .verStatus {
@@ -79,4 +84,11 @@ a {
 
 .loading span {
   display: block;
+}
+
+@media only screen and (max-width: 768px) {
+  .main {
+    width: 100%;
+    position: static;
+  }
 }

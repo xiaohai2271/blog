@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule, NavigationStart, Router} from '@angular/router';
+import {NavigationStart, Router, RouterModule, Routes} from '@angular/router';
 import {filter} from 'rxjs/operators';
 import {UserService} from './services/user/user.service';
 
@@ -33,6 +33,7 @@ const routes: Routes = [
 })
 export class AppRoutingModule {
 
+    // todo ： 换用路由守卫
     constructor(private router: Router, private userService: UserService) {
         this.router.events.pipe(filter((event) => event instanceof NavigationStart)
         ).subscribe((event: NavigationStart) => {
@@ -42,6 +43,8 @@ export class AppRoutingModule {
                         this.checkPermission(event);
                     } else if (data.code === 301) {
                         window.location.href = '/login';
+                    } else {
+                        window.location.href = '/';
                     }
                 });
             } else {

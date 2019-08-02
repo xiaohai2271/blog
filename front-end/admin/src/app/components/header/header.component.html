@@ -29,11 +29,11 @@
 
     <div id="landr" *ngIf="!userService.userInfo">
         <div class="login">
-            <a routerLink="/login" class="headerButton" style="border-radius: 8px;color: white"
-               id="index-topbar-forLogin">登录</a>
+            <a class="headerButton" style="border-radius: 8px;color: white"
+               id="index-topbar-forLogin" (click)="toPage('login')">登录</a>
         </div>
         <div class="registration">
-            <a routerLink="/registration" class="headerButton" style="border-radius: 8px;color: white">注册</a>
+            <a class="headerButton" style="border-radius: 8px;color: white" (click)="toPage('registration')">注册</a>
         </div>
     </div>
 

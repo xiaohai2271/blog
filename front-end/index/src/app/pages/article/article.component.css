@@ -272,6 +272,10 @@ textarea {
   padding: 8px;
 }
 
+#content {
+  padding: 0 5%;
+}
+
 @media only screen and (max-width: 768px) {
   .article-content {
     width: 100%;

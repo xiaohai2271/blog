@@ -6,25 +6,23 @@
   <div class="right" *ngIf="articleService.currentPage">
     <nz-card class="article am-animation-slide-right" *ngFor="let article of articleService.currentPage.list"
              [nzLoading]="!articleService.currentPage">
-      <a [routerLink]="'/article/'+article.id">
-        <h2 class="aTitle">{{article.title}}</h2>
-      </a>
 
+      <a [routerLink]="'/article/'+article.id"><h2 class="aTitle">{{article.title}}</h2></a>
       <ul class="aUl">
         <li>
-          <span class="aType"
-                [ngClass]="{'aTypeOriginal': article.original,'aTypeReprint':!article.original}">{{article.original ? "原创" : "转载"}}</span>
+          <span class="aType" [ngClass]="{'aTypeOriginal': article.original,'aTypeReprint':!article.original}">
+            {{article.original ? "原创" : "转载"}}
+          </span>
         </li>
         <li><i nz-icon nzType="calendar" nzTheme="outline"></i>{{article.publishDateFormat}}</li>
         <li><i nz-icon nzType="user" nzTheme="outline"></i>{{article.authorName}}</li>
-        <li><i nz-icon nzType="folder" nzTheme="outline"></i>
-          <a [routerLink]="['/category']" [queryParams]="{'name':article.category}">
-            <span>{{article.category}}</span>
-          </a>
+        <li>
+          <i nz-icon nzType="folder" nzTheme="outline"></i>
+          <a [routerLink]="['/category']" [queryParams]="{'name':article.category}">{{article.category}}</a>
         </li>
       </ul>
       <div class="aSummary">
-        {{article.summary}}
+        <p>{{article.summary}}</p>
       </div>
       <a [routerLink]="'/article/'+article.id" style="font-size: 1.2em;">
         阅读全文
@@ -51,7 +49,7 @@
       <hr>
       <div style="text-align: center;">
         <div class="am-center" align="center">
-          <img [src]="imagePath" width="100px" height="100px">
+          <img [src]="imagePath" width="100px" height="100px" alt="logo">
           <h2>小海</h2>
         </div>
         <div class="about-desc">

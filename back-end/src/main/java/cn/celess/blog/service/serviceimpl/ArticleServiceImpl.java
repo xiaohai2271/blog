@@ -31,7 +31,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static cn.celess.blog.enmu.LevelEnum.LOW;
 
 /**
  * @author : xiaohai
@@ -321,7 +320,7 @@ public class ArticleServiceImpl implements ArticleService {
                 category1 = categoryMapper.getLastestCategory();
             }
             article.setCategoryId(category1.getId());
-        }else {
+        } else {
             article.setCategoryId(oldArticle.getCategoryId());
         }
 

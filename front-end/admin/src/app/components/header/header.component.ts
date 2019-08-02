@@ -23,4 +23,8 @@ export class HeaderComponent implements OnInit {
         this.userService.logout();
         window.location.href = '/';
     }
+
+    toPage(path: string) {
+        window.location.href = path;
+    }
 }
