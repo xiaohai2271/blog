@@ -72,7 +72,7 @@ public class LinksController {
         }
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject("友链申请：" + name);
-        message.setTo("56462271@qq.com");
+        message.setTo("a@celess.cn");
         message.setText("name:" + name + "\nurl:" + url + "\n" + DateFormatUtil.getNow());
         Boolean send = mailService.AsyncSend(message);
         return ResponseUtil.success("");

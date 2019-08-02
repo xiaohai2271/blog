@@ -15,7 +15,6 @@ public class WebUpdateInfoController {
     @Autowired
     WebUpdateInfoService webUpdateInfoService;
 
-
     @PostMapping("/admin/webUpdate/create")
     public Response create(@RequestParam("info") String info) {
         return ResponseUtil.success(webUpdateInfoService.create(info));

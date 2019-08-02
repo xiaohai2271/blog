@@ -74,7 +74,7 @@ public class ExceptionHandle {
      */
     private void sendMessage(Exception e) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo("zh56462271@qq.com");
+        simpleMailMessage.setTo("a@celess.cn");
         simpleMailMessage.setSubject("服务器出现了错误");
         StringBuilder msg = new StringBuilder();
         msg.append("requirePath:\n").append(request.getRequestURL().toString()).append("?").append(request.getQueryString()).append("\n\n\n");
