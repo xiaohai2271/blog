@@ -3,6 +3,7 @@ package cn.celess.blog.service.serviceimpl;
 import cn.celess.blog.enmu.ResponseEnum;
 import cn.celess.blog.entity.PartnerSite;
 import cn.celess.blog.entity.request.LinkReq;
+import cn.celess.blog.exception.MyException;
 import cn.celess.blog.mapper.PartnerMapper;
 import cn.celess.blog.service.PartnerSiteService;
 import cn.celess.blog.util.RegexUtil;
@@ -13,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import cn.celess.blog.exception.MyException;
 
 /**
  * @author : xiaohai

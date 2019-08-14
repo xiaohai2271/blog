@@ -1,6 +1,5 @@
 package cn.celess.blog.entity.model;
 
-import lombok.Data;
 
 /**
  * @author : xiaohai

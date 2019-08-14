@@ -6,8 +6,6 @@ import cn.celess.blog.exception.MyException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @author : xiaohai
  * @date : 2019/03/08 15:06

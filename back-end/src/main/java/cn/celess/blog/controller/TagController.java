@@ -4,24 +4,18 @@ import cn.celess.blog.entity.Response;
 import cn.celess.blog.entity.Tag;
 import cn.celess.blog.service.TagService;
 import cn.celess.blog.util.ResponseUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author : xiaohai
  * @date : 2019/03/30 20:36
  */
 @RestController
-@Api(description = "标签接口")
 public class TagController {
     @Autowired
     TagService tagService;

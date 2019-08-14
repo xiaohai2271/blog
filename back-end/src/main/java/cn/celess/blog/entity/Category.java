@@ -3,7 +3,6 @@ package cn.celess.blog.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
 
 /**
  * @author : xiaohai

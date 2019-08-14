@@ -1,15 +1,9 @@
 package cn.celess.blog.service;
 
-import cn.celess.blog.entity.Article;
 import cn.celess.blog.entity.model.ArticleModel;
 import cn.celess.blog.entity.request.ArticleReq;
 import com.github.pagehelper.PageInfo;
-import net.sf.json.JSONArray;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 
 /**
