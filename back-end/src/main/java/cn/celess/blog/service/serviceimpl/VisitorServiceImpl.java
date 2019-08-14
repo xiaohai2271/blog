@@ -143,10 +143,7 @@ public class VisitorServiceImpl implements VisitorService {
             return true;
         }
         //防止没有匹配到http
-        if (ua.contains("Sprider")) {
-            return true;
-        }
-        return false;
+        return ua.toLowerCase().contains("spider");
     }
 
     /**
