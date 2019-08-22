@@ -23,9 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -55,7 +55,7 @@ public class ArticleServiceImpl implements ArticleService {
     HttpServletRequest request;
 
     @Override
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public ArticleModel create(ArticleReq reqBody) {
         if (reqBody == null) {
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);
@@ -186,7 +186,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public boolean delete(long articleID) {
 
         Article articleForDel = articleMapper.findArticleById(articleID);
@@ -260,7 +260,7 @@ public class ArticleServiceImpl implements ArticleService {
         return true;
     }
 
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ArticleModel update(ArticleReq reqBody) {
         if (reqBody == null) {

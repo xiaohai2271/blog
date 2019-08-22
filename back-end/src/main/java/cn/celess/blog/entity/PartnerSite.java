@@ -2,9 +2,6 @@ package cn.celess.blog.entity;
 
 import lombok.Data;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 /**
  * 友链
  *
@@ -13,8 +10,7 @@ import javax.persistence.Id;
  */
 @Data
 public class PartnerSite {
-    @Id
-    @GeneratedValue
+
     private Long id;
 
     private String name;
