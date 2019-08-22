@@ -153,7 +153,7 @@ public class VisitorServiceImpl implements VisitorService {
      * @return
      */
     private String getLocation(String ip) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         URL url;
         HttpURLConnection conn = null;
         InputStream inputStream = null;
@@ -173,7 +173,7 @@ public class VisitorServiceImpl implements VisitorService {
                 result.append(tmp);
             }
         } catch (Exception e) {
-            return null;
+            // ignore
         } finally {
             try {
                 if (conn != null) {
@@ -189,23 +189,24 @@ public class VisitorServiceImpl implements VisitorService {
                     bufferedReader.close();
                 }
             } catch (Exception e) {
-                return null;
+                // ignore
             }
-            StringBuffer s = new StringBuffer();
-            if ("".equals(result.toString())) {
-                throw new MyException(ResponseEnum.FAILURE);
-            }
-            Map<String, Object> stringObjectMap = JsonParserFactory.getJsonParser().parseMap(result.toString());
-            if ((Integer) stringObjectMap.get("code") == 0) {
-                Map<String, Object> data = (LinkedHashMap) stringObjectMap.get("data");
-                s.append(data.get("country"))
-                        .append("-")
-                        .append(data.get("region"))
-                        .append("-")
-                        .append(data.get("city"));
-            }
-            return s.toString();
         }
+        StringBuilder sb = new StringBuilder();
+        if ("".equals(result.toString())) {
+            throw new MyException(ResponseEnum.FAILURE);
+        }
+        Map<String, Object> stringObjectMap = JsonParserFactory.getJsonParser().parseMap(result.toString());
+        if ((Integer) stringObjectMap.get("code") == 0) {
+            LinkedHashMap data = (LinkedHashMap) stringObjectMap.get("data");
+            sb.append(data.get("country"))
+                    .append("-")
+                    .append(data.get("region"))
+                    .append("-")
+                    .append(data.get("city"));
+        }
+        return sb.toString();
+
     }
 
 
