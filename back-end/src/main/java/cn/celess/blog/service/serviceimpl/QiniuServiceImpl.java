@@ -28,16 +28,18 @@ public class QiniuServiceImpl implements QiniuService {
     private BucketManager bucketManager;
     private Auth auth;
 
-    /***
-     * 七牛的配置
-     */
-    private final String accessKey = "";
-    private final String secretKey = "";
-    private final String bucket = "";
+    private static String bucket;
 
 
-    //数据初始化
     {
+        /* ***** 必填 ******
+         *    七牛的配置    *
+         * ***** 必填 ******
+         */
+        String accessKey = "";
+        String secretKey = "";
+        bucket = "";
+
         auth = Auth.create(accessKey, secretKey);
         uploadManager = new UploadManager(cfg);
         bucketManager = new BucketManager(auth, cfg);
@@ -78,8 +80,8 @@ public class QiniuServiceImpl implements QiniuService {
     @Override
     public boolean continueFile(String key) {
         FileInfo[] allFile = getFileList();
-        for (int i = 0; i < allFile.length; i++) {
-            if (key.equals(allFile[i].key)) {
+        for (FileInfo fileInfo : allFile) {
+            if (key.equals(fileInfo.key)) {
                 return true;
             }
         }
