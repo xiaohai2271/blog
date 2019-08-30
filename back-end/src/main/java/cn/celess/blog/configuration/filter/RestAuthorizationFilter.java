@@ -6,11 +6,9 @@ import cn.celess.blog.util.ResponseUtil;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.StringUtils;
 import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
-import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
@@ -22,32 +20,18 @@ public class RestAuthorizationFilter extends PermissionsAuthorizationFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
-        Boolean jsonRes = true;
-        ((HttpServletResponse) response).setHeader("access-control-allow-origin", "https://www.celess.cn");
-        ((HttpServletResponse) response).setHeader("Access-Control-Allow-Credentials","true");
         response.setContentType("application/Json");
         response.setCharacterEncoding("utf-8");
         Subject subject = this.getSubject(request, response);
+
         if (subject.getPrincipal() == null) {
-            if (!jsonRes) {
-                this.saveRequestAndRedirectToLogin(request, response);
-            } else {
-                response.getWriter().println(ResponseUtil.response(ResponseEnum.HAVE_NOT_LOG_IN, null).toString());
-            }
+            // 未登录
+            response.getWriter().println(ResponseUtil.response(ResponseEnum.HAVE_NOT_LOG_IN, null).toString());
         } else {
-            if (jsonRes) {
-                String unauthorizedUrl = this.getUnauthorizedUrl();
-                if (StringUtils.hasText(unauthorizedUrl)) {
-                } else {
-                    response.getWriter().print(ResponseUtil.response(ResponseEnum.PERMISSION_ERROR, null).toString());
-                }
-            } else {
-                String unauthorizedUrl = this.getUnauthorizedUrl();
-                if (StringUtils.hasText(unauthorizedUrl)) {
-                    WebUtils.issueRedirect(request, response, unauthorizedUrl);
-                } else {
-                    WebUtils.toHttp(response).sendError(401);
-                }
+            String unauthorizedUrl = this.getUnauthorizedUrl();
+            if (!StringUtils.hasText(unauthorizedUrl)) {
+                // 没权限
+                response.getWriter().print(ResponseUtil.response(ResponseEnum.PERMISSION_ERROR, null).toString());
             }
         }
         return false;
@@ -60,8 +44,8 @@ public class RestAuthorizationFilter extends PermissionsAuthorizationFilter {
         if (rolesArray == null || rolesArray.length == 0) {
             return false;
         }
-        for (int i = 0; i < rolesArray.length; i++) {
-            if (subject.hasRole(rolesArray[i])) {
+        for (String s : rolesArray) {
+            if (subject.hasRole(s)) {
                 return true;
             }
         }
