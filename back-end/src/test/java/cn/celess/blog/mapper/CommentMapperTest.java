@@ -48,6 +48,12 @@ public class CommentMapperTest {
     }
 
     @Test
+    public void deleteByArticleId() {
+        Assert.assertNotEquals(0,commentMapper.deleteByArticleId(1286));
+        Assert.assertEquals(0,commentMapper.deleteByArticleId(1286));
+    }
+
+    @Test
     public void existsById() {
     }
 

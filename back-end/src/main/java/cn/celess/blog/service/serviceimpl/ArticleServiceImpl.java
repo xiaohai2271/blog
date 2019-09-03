@@ -221,13 +221,8 @@ public class ArticleServiceImpl implements ArticleService {
             //删除的是最后一篇文章
             articleMapper.updateNextArticleId(preArticle.getId(), -1);
         }
-
-        //        TODO::   sql优化
-        List<Comment> allByArticleID = commentMapper.findAllByArticleID(articleID);
-        for (int i = 0; i < allByArticleID.size(); i++) {
-            commentMapper.delete(allByArticleID.get(i).getId());
-        }
-
+        // delete count 为删除的数据数量
+        int deleteCount = commentMapper.deleteByArticleId(articleID);
 
         //删除标签中的文章id
         String tag = articleForDel.getTagsId();

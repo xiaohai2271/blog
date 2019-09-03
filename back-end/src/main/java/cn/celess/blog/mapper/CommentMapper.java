@@ -22,6 +22,8 @@ public interface CommentMapper {
 
     int delete(long id);
 
+    int deleteByArticleId(long articleId);
+
     boolean existsById(long id);
 
     Comment findCommentById(long id);

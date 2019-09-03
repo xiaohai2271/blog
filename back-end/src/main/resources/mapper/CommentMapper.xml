@@ -33,6 +33,11 @@
         from comment
         where co_id = #{id}
     </delete>
+    <delete id="deleteByArticleId">
+        delete
+        from comment
+        where co_article_id = #{articleId}
+    </delete>
     <select id="existsById" resultType="java.lang.Boolean">
         SELECT EXISTS(SELECT * FROM comment WHERE co_id = #{id})
     </select>
