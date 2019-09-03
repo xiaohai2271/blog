@@ -40,12 +40,6 @@ public class VisitorServiceImpl implements VisitorService {
     RedisUtil redisUtil;
 
     @Override
-    public long getViews() {
-        return visitorMapper.count();
-    }
-
-
-    @Override
     public String location(String ip) {
         return getLocation(ip);
     }

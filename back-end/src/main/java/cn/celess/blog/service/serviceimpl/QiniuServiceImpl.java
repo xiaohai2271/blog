@@ -77,8 +77,7 @@ public class QiniuServiceImpl implements QiniuService {
         return items;
     }
 
-    @Override
-    public boolean continueFile(String key) {
+    private boolean continueFile(String key) {
         FileInfo[] allFile = getFileList();
         for (FileInfo fileInfo : allFile) {
             if (key.equals(fileInfo.key)) {

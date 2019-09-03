@@ -42,11 +42,6 @@ public class UserController {
         return ResponseUtil.success(userService.update(desc, displayName));
     }
 
-    @DeleteMapping("/user/userInfo/del/{id}")
-    public Response delUser(@PathVariable("id") long id) {
-        return ResponseUtil.success(userService.delete(id));
-    }
-
     @GetMapping("/user/userInfo")
     public Response getUserInfo() {
         return ResponseUtil.success(userService.getUserInfoBySession());

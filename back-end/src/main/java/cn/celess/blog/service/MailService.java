@@ -9,7 +9,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface MailService {
+    /**
+     * 异步发生邮件
+     *
+     * @param message SimpleMailMessage对象
+     * @return //
+     */
     Boolean AsyncSend(SimpleMailMessage message);
 
+    /**
+     * 同步发送邮件
+     *
+     * @param message SimpleMailMessage对象
+     * @return 发送状态
+     */
     Boolean send(SimpleMailMessage message);
 }

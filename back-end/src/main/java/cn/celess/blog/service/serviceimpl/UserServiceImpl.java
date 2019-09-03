@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Object login(LoginReq loginReq) {
+    public UserModel login(LoginReq loginReq) {
         if (loginReq == null) {
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);
         }
@@ -135,15 +135,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean delete(long id) {
-//        User user = userMapper.findById(id);
-//        if (user == null) throw new MyException(ResponseEnum.USER_NOT_EXIST);
-//        request.getSession().removeAttribute("userInfo");
-//        userMapper.(id);
-        return true;
-    }
-
-    @Override
     public UserModel update(String desc, String displayName) {
         User user = GetUserInfoBySessionUtil.get();
         user.setDesc(desc);
@@ -170,15 +161,6 @@ public class UserServiceImpl implements UserService {
             throw new MyException(ResponseEnum.USER_NOT_EXIST);
         }
         return user;
-    }
-
-    @Override
-    public UserModel retrieveByID(long id) {
-        User user = userMapper.findById(id);
-        if (user == null) {
-            throw new MyException(ResponseEnum.USER_NOT_EXIST);
-        }
-        return trans(user);
     }
 
     @Override

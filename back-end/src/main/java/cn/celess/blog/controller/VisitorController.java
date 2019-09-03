@@ -22,7 +22,7 @@ public class VisitorController {
 
     @GetMapping("/visitor/count")
     public Response getVisitorCount() {
-        return ResponseUtil.success(visitorService.getViews());
+        return ResponseUtil.success(countService.getVisitorCount());
     }
 
     @GetMapping("/admin/visitor/page")

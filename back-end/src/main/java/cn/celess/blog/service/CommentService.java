@@ -11,47 +11,91 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface CommentService {
+    /**
+     * 新增数据
+     *
+     * @param reqBody 请求数据体
+     * @return 增加的comment数据
+     */
     CommentModel create(CommentReq reqBody);
 
+    /**
+     * 删除数据
+     *
+     * @param id comment的id
+     * @return 删除状态
+     */
     boolean delete(long id);
 
+    /**
+     * 更新数据
+     *
+     * @param reqBody comment请求体
+     * @return 更新后的数据
+     */
     CommentModel update(CommentReq reqBody);
 
     /**
-     * 分页查询
+     * 分页获取数据
      *
-     * @param page
-     * @param count
-     * @return
+     * @param isComment true：评论   false：留言
+     * @param count     单页数据量
+     * @param page      数据页
+     * @return 分页数据
      */
-
     PageInfo<CommentModel> retrievePage(Boolean isComment, int page, int count);
 
     /**
-     * 分页查询
+     * 通过pid获取数据
      *
-     * @param pid
-     * @param page  默认-1
-     * @param count
-     * @return
+     * @param pid   父id
+     * @param count 单页数据量
+     * @param page  数据页
+     * @return 分页数据
      */
     PageInfo<CommentModel> retrievePageByPid(long pid, int page, int count);
 
 
+    /**
+     * 根据评论者获取数据
+     *
+     * @param isComment true：评论   false：留言
+     * @param count     单页数据量
+     * @param page      数据页
+     * @return 分页数据
+     */
     PageInfo<CommentModel> retrievePageByAuthor(Boolean isComment, int page, int count);
 
     /**
-     * 分页查询评论/留言
+     * 根据文章获取数据
      *
-     * @return
+     * @param articleID 文章id
+     * @param pid       父id
+     * @param count     单页数据量
+     * @param page      数据页
+     * @return 分页数据
      */
     PageInfo<CommentModel> retrievePageByArticle(long articleID, long pid, int page, int count);
 
     /**
-     * 分页查询评论/留言
+     * 根据数据的type和pid获取数据
+     *
+     * @param isComment true：评论   false：留言
+     * @param pid       父id
+     * @param count     单页数据量
+     * @param page      数据页
+     * @return 分页数据
      */
     PageInfo<CommentModel> retrievePageByTypeAndPid(Boolean isComment, int pid, int page, int count);
 
+    /**
+     * 根据type获取数据
+     *
+     * @param isComment true：评论   false：留言
+     * @param count     单页数据量
+     * @param page      数据页
+     * @return 分页数据
+     */
     PageInfo<CommentModel> retrievePageByType(Boolean isComment, int page, int count);
 
 }
