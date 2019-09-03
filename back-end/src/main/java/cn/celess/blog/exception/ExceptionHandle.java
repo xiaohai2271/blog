@@ -40,37 +40,43 @@ public class ExceptionHandle {
     public Response handle(Exception e) {
         //自定义错误
         if (e instanceof MyException) {
+            logger.debug("返回了自定义的exception,[code={},msg={}]", ((MyException) e).getCode(), e.getMessage());
             return new Response(((MyException) e).getCode(), e.getMessage(), null, System.currentTimeMillis());
         }
         //请求路径不支持该方法
         if (e instanceof HttpRequestMethodNotSupportedException) {
+            logger.debug("遇到请求路径与请求方法不匹配的请求，[msg={}，path:{},method:{}]", e.getMessage(),request.getRequestURL(),request.getMethod());
             return new Response(ResponseEnum.ERROR.getCode(), e.getMessage(), null, System.currentTimeMillis());
         }
         //数据输入类型不匹配
         if (e instanceof MethodArgumentTypeMismatchException) {
+            logger.debug("输入类型不匹配,[msg={}]", e.getMessage());
             return new Response(ResponseEnum.PARAMETERS_ERROR.getCode(), "数据输入有问题，请修改后再访问", null, System.currentTimeMillis());
         }
         //数据验证失败
         if (e instanceof BindException) {
+            logger.debug("数据验证失败,[msg={}]", e.getMessage());
             return new Response(ResponseEnum.PARAMETERS_ERROR.getCode(), "数据输入有问题，请修改", null, System.currentTimeMillis());
         }
         //数据输入不完整
         if (e instanceof MissingServletRequestParameterException) {
+            logger.debug("数据输入不完整,[msg={}]", e.getMessage());
             return new Response(ResponseEnum.PARAMETERS_ERROR.getCode(), "数据输入不完整,请检查", null, System.currentTimeMillis());
         }
 
         // 发送错误信息到邮箱
         if ("prod".equals(activeModel)) {
+            logger.debug("有一个未捕获的bug，已发送到邮箱");
+            e.printStackTrace();
             sendMessage(e);
         }
-        logger.error("Exception: ", e);
         return new Response(ResponseEnum.ERROR.getCode(), "服务器出现错误，已记录", null, System.currentTimeMillis());
     }
 
     /**
      * 发送错误信息
      *
-     * @param e
+     * @param e 错误
      */
     private void sendMessage(Exception e) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
