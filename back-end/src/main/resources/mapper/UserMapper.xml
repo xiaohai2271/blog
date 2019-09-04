@@ -46,6 +46,12 @@
         set `u_pwd`=#{pwd}
         where `u_email` = #{email}
     </update>
+    <update id="setUserRole">
+        update user set role=#{role} where u_id = #{uid}
+    </update>
+    <delete id="delete">
+        delete  from user where u_id=#{id}
+    </delete>
 
     <select id="existsByEmail" resultType="java.lang.Boolean">
         select exists(select * from user where u_email = #{email})
@@ -94,5 +100,13 @@
     <select id="count" resultType="java.lang.Long">
         select count(*)
         from user
+    </select>
+    <select id="getRoleById" resultType="java.lang.String">
+        select role
+        from user
+        where u_id = #{id}
+    </select>
+    <select id="findAll" resultMap="userResultMap">
+        select * from user
     </select>
 </mapper>

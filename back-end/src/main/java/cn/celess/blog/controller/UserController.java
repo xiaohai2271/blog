@@ -20,7 +20,6 @@ public class UserController {
     UserService userService;
 
 
-
     @PostMapping("/login")
     public Response login(@RequestBody LoginReq loginReq) {
         return ResponseUtil.success(userService.login(loginReq));
@@ -91,6 +90,21 @@ public class UserController {
                              @RequestParam("email") String email,
                              @RequestParam("pwd") String pwd) {
         return ResponseUtil.success(userService.reSetPwd(verifyId, email, pwd));
+    }
+
+    @DeleteMapping("/admin/user/delete")
+    public Response delete(@RequestBody Integer[] ids) {
+        return ResponseUtil.success(userService.deleteUser(ids));
+    }
+
+    @PostMapping("/admin/resetRole")
+    public Response setRole(@RequestParam("id") long uid, @RequestParam("role") String role) {
+        return ResponseUtil.success(userService.setUserRole(uid, role));
+    }
+
+    @GetMapping("/admin/users")
+    public Response getAllUser(@RequestParam("page") int pageNum, @RequestParam("count") int count) {
+        return ResponseUtil.success(userService.getUserList(pageNum, count));
     }
 
 

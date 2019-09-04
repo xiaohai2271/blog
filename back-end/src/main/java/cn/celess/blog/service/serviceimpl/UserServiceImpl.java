@@ -11,6 +11,10 @@ import cn.celess.blog.service.MailService;
 import cn.celess.blog.service.QiniuService;
 import cn.celess.blog.service.UserService;
 import cn.celess.blog.util.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -23,7 +27,9 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.beans.Transient;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -310,6 +316,67 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new MyException(ResponseEnum.FAILURE.getCode(), "标识码不一致");
         }
+    }
+
+    @Override
+    public Object deleteUser(Integer[] id) {
+        JSONArray status = new JSONArray();
+        if (id == null || id.length == 0) {
+            return null;
+        }
+        for (Integer integer : id) {
+            String role = userMapper.getRoleById(integer);
+            int deleteResult = 0;
+            JSONObject deleteStatus = new JSONObject();
+            deleteStatus.put("id", integer);
+            // 管理员账户不可删
+            if ("admin".equals(role)) {
+                deleteStatus.put("msg", "用户为管理员，不可删除");
+                deleteStatus.put("status", false);
+                status.add(deleteStatus);
+                logger.info("删除用户id为{}的用户，删除状态{}, 原因：用户为管理员，不可删除", integer,false);
+                continue;
+            }
+            // 非管理员账户
+            deleteResult = userMapper.delete(integer);
+            deleteStatus.put("status", deleteResult == 1);
+            logger.info("删除用户id为{}的用户，删除状态{}", integer, deleteResult == 1);
+            if (deleteResult == 0) {
+                deleteStatus.put("msg", "用户不存在");
+            }
+            status.add(deleteStatus);
+        }
+        return status;
+    }
+
+    @Override
+    public boolean setUserRole(long uid, String role) {
+        String oldRole = userMapper.getRoleById(uid);
+        if (oldRole == null) {
+            logger.info("设置id={}用户的角色失败，原因:用户可能不存在", uid);
+            return false;
+        }
+        if (oldRole.equals(role)) {
+            return false;
+        }
+        // todo :: move role to a enum class
+        if ("user".equals(role)|| "admin".equals(role)){
+            throw new MyException(ResponseEnum.PARAMETERS_ERROR);
+        }
+        int result = userMapper.setUserRole(uid, role);
+        logger.info("设置[id={}]的role，设置状态：{}", uid, result == 1);
+        return result == 1;
+    }
+
+    @Override
+    public List<UserModel> getUserList(Integer page, Integer count) {
+        PageHelper.startPage(page, count);
+        List<User> all = userMapper.findAll();
+        PageInfo pageInfo = PageInfo.of(all);
+        List<UserModel> modelList = new ArrayList<>();
+        all.forEach(user -> modelList.add(trans(user)));
+        pageInfo.setList(modelList);
+        return modelList;
     }
 
     private UserModel trans(User u) {

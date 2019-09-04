@@ -138,4 +138,32 @@ public interface UserService {
      */
     Object reSetPwd(String verifyId, String email, String pwd);
 
+    /**
+     * 删除用户
+     *
+     * @param id 用户id的数组
+     * @return 对应id 的删除状态
+     */
+    Object deleteUser(Integer[] id);
+
+    /**
+     * 设置用户的角色
+     *
+     * @param uid  用户id
+     * @param role 设置的新的角色
+     * @return 设置状态
+     */
+    boolean setUserRole(long uid, String role);
+
+    /**
+     * 获取用户列表
+     *
+     * @param count 单页数据量
+     * @param page  数据页
+     * @return 分页数据
+     */
+    List<UserModel> getUserList(Integer page, Integer count);
+
+
+    //todo:管理员重置密码
 }
