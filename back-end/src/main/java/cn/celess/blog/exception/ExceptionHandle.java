@@ -67,9 +67,9 @@ public class ExceptionHandle {
         // 发送错误信息到邮箱
         if ("prod".equals(activeModel)) {
             logger.debug("有一个未捕获的bug，已发送到邮箱");
-            e.printStackTrace();
             sendMessage(e);
         }
+        e.printStackTrace();
         return new Response(ResponseEnum.ERROR.getCode(), "服务器出现错误，已记录", null, System.currentTimeMillis());
     }
 
