@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: 小海
@@ -25,7 +26,7 @@ public interface UserMapper {
 
     int updateEmailStatus(String email, boolean status);
 
-    int updatePwd(String email,String pwd);
+    int updatePwd(String email, String pwd);
 
     String getPwd(String email);
 
@@ -43,5 +44,13 @@ public interface UserMapper {
 
     String getRoleByEmail(String email);
 
+    String getRoleById(long id);
+
     long count();
+
+    int delete(long id);
+
+    int setUserRole(Long uid,String role);
+
+    List<User> findAll();
 }

@@ -57,4 +57,26 @@ public class UserMapperTest {
     @Test
     public void getDisPlayName() {
     }
+
+    @Test
+    public void getRoleById() {
+        assertEquals("admin", userMapper.getRoleById(2));
+    }
+
+    @Test
+    public void delete() {
+        assertEquals(1, userMapper.delete(990));
+        assertEquals(0, userMapper.delete(990));
+    }
+
+    @Test
+    public void setUserRole() {
+        assertEquals(1, userMapper.setUserRole(2L, "admin"));
+        assertEquals("admin", userMapper.getRoleById(2L));
+    }
+
+    @Test
+    public void findAll() {
+        assertNotEquals(0, userMapper.findAll().size());
+    }
 }
