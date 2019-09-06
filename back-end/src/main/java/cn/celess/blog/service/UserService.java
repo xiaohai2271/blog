@@ -5,6 +5,7 @@ import cn.celess.blog.entity.model.UserModel;
 import cn.celess.blog.entity.request.LoginReq;
 import cn.celess.blog.entity.request.UserReq;
 import com.github.pagehelper.PageInfo;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -165,4 +166,11 @@ public interface UserService {
      */
     UserModel adminUpdate(UserReq user);
 
+    /**
+     * 获取电子邮件的存在状态
+     *
+     * @param email email
+     * @return true:存在  false：不存在
+     */
+    boolean getStatusOfEmail(String email);
 }

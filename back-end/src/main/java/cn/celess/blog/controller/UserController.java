@@ -99,7 +99,7 @@ public class UserController {
     }
 
     @DeleteMapping("/admin/user/delete/{id}")
-    public Response delete(@PathVariable("id")Integer id) {
+    public Response delete(@PathVariable("id") Integer id) {
         return ResponseUtil.success(userService.deleteUser(new Integer[]{id}));
     }
 
@@ -111,6 +111,11 @@ public class UserController {
     @GetMapping("/admin/users")
     public Response getAllUser(@RequestParam("page") int pageNum, @RequestParam("count") int count) {
         return ResponseUtil.success(userService.getUserList(pageNum, count));
+    }
+
+    @GetMapping("/emailStatus/{email}")
+    public Response getAllUser(@PathVariable("email") String email) {
+        return ResponseUtil.success(userService.getStatusOfEmail(email));
     }
 
 

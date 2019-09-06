@@ -409,6 +409,11 @@ public class UserServiceImpl implements UserService {
         return trans(user);
     }
 
+    @Override
+    public boolean getStatusOfEmail(String email) {
+        return userMapper.existsByEmail(email);
+    }
+
     private UserModel trans(User u) {
         UserModel user = new UserModel();
         user.setId(u.getId());
