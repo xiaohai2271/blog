@@ -50,7 +50,9 @@ public interface UserMapper {
 
     int delete(long id);
 
-    int setUserRole(Long uid,String role);
+    int setUserRole(Long uid, String role);
 
     List<User> findAll();
+
+    int update(User user);
 }

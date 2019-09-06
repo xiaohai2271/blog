@@ -3,6 +3,7 @@ package cn.celess.blog.service;
 import cn.celess.blog.entity.User;
 import cn.celess.blog.entity.model.UserModel;
 import cn.celess.blog.entity.request.LoginReq;
+import cn.celess.blog.entity.request.UserReq;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -148,15 +149,6 @@ public interface UserService {
     Object deleteUser(Integer[] id);
 
     /**
-     * 设置用户的角色
-     *
-     * @param uid  用户id
-     * @param role 设置的新的角色
-     * @return 设置状态
-     */
-    boolean setUserRole(long uid, String role);
-
-    /**
      * 获取用户列表
      *
      * @param count 单页数据量
@@ -165,6 +157,12 @@ public interface UserService {
      */
     PageInfo<UserModel> getUserList(Integer page, Integer count);
 
+    /**
+     * 更改用户信息
+     *
+     * @param user 用户数据
+     * @return 用户信息
+     */
+    UserModel adminUpdate(UserReq user);
 
-    //todo:管理员重置密码
 }

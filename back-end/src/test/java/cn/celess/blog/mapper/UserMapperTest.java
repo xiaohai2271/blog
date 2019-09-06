@@ -1,6 +1,7 @@
 package cn.celess.blog.mapper;
 
 import cn.celess.blog.entity.User;
+import cn.celess.blog.util.MD5Util;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,6 +62,19 @@ public class UserMapperTest {
     @Test
     public void getRoleById() {
         assertEquals("admin", userMapper.getRoleById(2));
+    }
+
+    @Test
+    public void update() {
+        User user = userMapper.findById(5);
+        user.setEmail("test1@test.cn");
+        user.setRole("user");
+        user.setPwd(MD5Util.getMD5("56462271"));
+        user.setEmailStatus(true);
+        user.setDisplayName("test");
+        user.setAvatarImgUrl("xxx");
+        user.setDesc("test");
+        assertEquals(1,  userMapper.update(user));
     }
 
     @Test

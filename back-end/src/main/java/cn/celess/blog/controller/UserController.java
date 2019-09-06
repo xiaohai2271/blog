@@ -2,6 +2,7 @@ package cn.celess.blog.controller;
 
 import cn.celess.blog.entity.Response;
 import cn.celess.blog.entity.request.LoginReq;
+import cn.celess.blog.entity.request.UserReq;
 import cn.celess.blog.service.UserService;
 import cn.celess.blog.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,13 +94,18 @@ public class UserController {
     }
 
     @DeleteMapping("/admin/user/delete")
-    public Response delete(@RequestBody Integer[] ids) {
+    public Response multipleDelete(@RequestBody Integer[] ids) {
         return ResponseUtil.success(userService.deleteUser(ids));
     }
 
-    @PostMapping("/admin/resetRole")
-    public Response setRole(@RequestParam("id") long uid, @RequestParam("role") String role) {
-        return ResponseUtil.success(userService.setUserRole(uid, role));
+    @DeleteMapping("/admin/user/delete/{id}")
+    public Response delete(@PathVariable("id")Integer id) {
+        return ResponseUtil.success(userService.deleteUser(new Integer[]{id}));
+    }
+
+    @PutMapping("/admin/user")
+    public Response setRole(@RequestBody UserReq user) {
+        return ResponseUtil.success(userService.adminUpdate(user));
     }
 
     @GetMapping("/admin/users")

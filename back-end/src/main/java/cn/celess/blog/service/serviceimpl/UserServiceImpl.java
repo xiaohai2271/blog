@@ -5,6 +5,7 @@ import cn.celess.blog.entity.User;
 import cn.celess.blog.entity.model.QiniuResponse;
 import cn.celess.blog.entity.model.UserModel;
 import cn.celess.blog.entity.request.LoginReq;
+import cn.celess.blog.entity.request.UserReq;
 import cn.celess.blog.exception.MyException;
 import cn.celess.blog.mapper.UserMapper;
 import cn.celess.blog.service.MailService;
@@ -334,7 +335,7 @@ public class UserServiceImpl implements UserService {
                 deleteStatus.put("msg", "用户为管理员，不可删除");
                 deleteStatus.put("status", false);
                 status.add(deleteStatus);
-                logger.info("删除用户id为{}的用户，删除状态{}, 原因：用户为管理员，不可删除", integer,false);
+                logger.info("删除用户id为{}的用户，删除状态{}, 原因：用户为管理员，不可删除", integer, false);
                 continue;
             }
             // 非管理员账户
@@ -350,25 +351,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean setUserRole(long uid, String role) {
-        String oldRole = userMapper.getRoleById(uid);
-        if (oldRole == null) {
-            logger.info("设置id={}用户的角色失败，原因:用户可能不存在", uid);
-            return false;
-        }
-        if (oldRole.equals(role)) {
-            return false;
-        }
-        // todo :: move role to a enum class
-        if ("user".equals(role)|| "admin".equals(role)){
-            throw new MyException(ResponseEnum.PARAMETERS_ERROR);
-        }
-        int result = userMapper.setUserRole(uid, role);
-        logger.info("设置[id={}]的role，设置状态：{}", uid, result == 1);
-        return result == 1;
-    }
-
-    @Override
     public PageInfo<UserModel> getUserList(Integer page, Integer count) {
         PageHelper.startPage(page, count);
         List<User> all = userMapper.findAll();
@@ -377,6 +359,54 @@ public class UserServiceImpl implements UserService {
         all.forEach(user -> modelList.add(trans(user)));
         pageInfo.setList(modelList);
         return pageInfo;
+    }
+
+    @Override
+    public UserModel adminUpdate(UserReq userReq) {
+        if (userReq == null || userReq.getId() == null) {
+            throw new MyException(ResponseEnum.PARAMETERS_ERROR);
+        }
+        User user = userMapper.findById(userReq.getId());
+        // 设置数据
+        if (userReq.getDesc() != null) {
+            user.setDesc(userReq.getDesc());
+        }
+        if (userReq.getDisplayName() != null) {
+            user.setDisplayName(userReq.getDisplayName());
+        }
+        if (userReq.getEmailStatus() != null) {
+            user.setEmailStatus(userReq.getEmailStatus());
+        }
+        if (userReq.getPwd() != null) {
+            if (userReq.getPwd().length() < 6 || userReq.getPwd().length() > 16) {
+                throw new MyException(ResponseEnum.PASSWORD_TOO_SHORT_OR_LONG);
+            }
+            if (RegexUtil.pwdMatch(userReq.getPwd())) {
+                throw new MyException(ResponseEnum.PARAMETERS_ERROR);
+            }
+            user.setPwd(MD5Util.getMD5(userReq.getPwd()));
+        }
+        if (userReq.getRole() != null) {
+            // TODO:用enum存放角色分类
+            if ("user".equals(userReq.getRole()) || "admin".equals(userReq.getRole())) {
+                user.setRole(userReq.getRole());
+            } else {
+                throw new MyException(ResponseEnum.PARAMETERS_ERROR);
+            }
+        }
+        if (userReq.getEmail() != null) {
+            if (!RegexUtil.emailMatch(userReq.getEmail())) {
+                throw new MyException(ResponseEnum.PARAMETERS_EMAIL_ERROR);
+            }
+            user.setEmail(userReq.getEmail());
+        }
+        // 数据写入
+        int updateResult = userMapper.update(user);
+        if (updateResult == 0) {
+            throw new MyException(ResponseEnum.FAILURE);
+        }
+        logger.info("修改了用户 [id={}] 的用户的资料", userReq.getId());
+        return trans(user);
     }
 
     private UserModel trans(User u) {
