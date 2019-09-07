@@ -382,7 +382,7 @@ public class UserServiceImpl implements UserService {
                 throw new MyException(ResponseEnum.PASSWORD_TOO_SHORT_OR_LONG);
             }
             if (RegexUtil.pwdMatch(userReq.getPwd())) {
-                throw new MyException(ResponseEnum.PARAMETERS_ERROR);
+                throw new MyException(ResponseEnum.PARAMETERS_PWD_ERROR);
             }
             user.setPwd(MD5Util.getMD5(userReq.getPwd()));
         }
@@ -404,6 +404,9 @@ public class UserServiceImpl implements UserService {
         int updateResult = userMapper.update(user);
         if (updateResult == 0) {
             throw new MyException(ResponseEnum.FAILURE);
+        }
+        if (GetUserInfoBySessionUtil.get().getId().equals(userReq.getId())) {
+            GetUserInfoBySessionUtil.set(user);
         }
         logger.info("修改了用户 [id={}] 的用户的资料", userReq.getId());
         return trans(user);
