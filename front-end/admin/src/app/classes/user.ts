@@ -7,4 +7,5 @@ export class User {
     recentlyLandedDate: string;
     desc: string;
     role: string;
+    pwd?: string;
 }

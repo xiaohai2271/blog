@@ -51,7 +51,7 @@
                 <span>修改信息</span>
             </li>
 
-            <li nz-menu-item routerLink="user" nzDisabled="true" *ngIf="userService.userInfo.role=='admin'">
+            <li nz-menu-item routerLink="users" *ngIf="userService.userInfo.role=='admin'">
                 <i nz-icon nzType="user" nzTheme="outline"></i>
                 <span>用户管理</span>
             </li>

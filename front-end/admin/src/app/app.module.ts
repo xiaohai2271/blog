@@ -22,6 +22,7 @@ import {CategoryManagerComponent} from './pages/category-manager/category-manage
 import {LinksManagerComponent} from './pages/links-manager/links.component';
 import {VisitorManagerComponent} from './pages/visitor-manager/visitor-manager.component';
 import {UpdateManagerComponent} from './pages/update-manager/update.component';
+import {UserManagerComponent} from './pages/user-manager/user-manager.component';
 // services
 import {HttpService} from './services/http.service';
 
@@ -41,7 +42,8 @@ registerLocaleData(zh);
         CategoryManagerComponent,
         LinksManagerComponent,
         VisitorManagerComponent,
-        UpdateManagerComponent
+        UpdateManagerComponent,
+        UserManagerComponent
     ],
     imports: [
         BrowserModule,
