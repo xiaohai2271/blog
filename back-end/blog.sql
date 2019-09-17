@@ -19,7 +19,7 @@ CREATE TABLE `article`
     `a_reading_number` int        default 0 comment '文章阅读数',
     `a_publish_date`   datetime     not null comment '文章发布时间',
     `a_update_date`    datetime   default null comment '文章的更新时间'
-) comment '文章表';
+) DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci,comment '文章表';
 
 CREATE TABLE `tag`
 (
@@ -33,7 +33,7 @@ CREATE table `category`
     `c_id`     bigint(20) primary key auto_increment,
     `c_name`   varchar(255) not null,
     `articles` varchar(255) comment '分类下的文章'
-) comment '分类表';
+)comment '分类表';
 
 CREATE TABLE `comment`
 (
@@ -45,7 +45,7 @@ CREATE TABLE `comment`
     `co_date`        datetime   not null comment '评论/留言的日期',
     `co_pid`         bigint     not null default -1 comment '评论/留言的父id',
     `co_response_id` tinytext
-) comment '评论/留言表';
+) DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci,comment '评论/留言表';
 
 CREATE TABLE `links`
 (

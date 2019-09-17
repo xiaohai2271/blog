@@ -42,6 +42,22 @@ public class ArticleMapperTest extends BaseTest {
         mArticle = articleMapper.getLastestArticle();
     }
 
+    @Test
+    public void saveForEmoji() {
+        Article article = new Article();
+        article.setTitle("❤");
+        article.setAuthorId(1L);
+        article.setSummary("unit test");
+        article.setMdContent("❤");
+        article.setCategoryId(1L);
+        article.setTagsId("1,2,3,4");
+        article.setNextArticleId(-1L);
+        article.setPreArticleId(articleMapper.getLastestArticleId());
+        article.setPublishDate(new Date());
+
+        assertEquals(1, articleMapper.insert(article));
+    }
+
 
     @Test
     public void update() {
