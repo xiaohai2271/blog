@@ -7,6 +7,7 @@ import {Category} from '../../classes/category';
 })
 export class CategoryService {
 
+    // FIXME : ！！！！！！！！！！！！！！！！！！数据处理全部放到一个模块中！！！！！！！！！！！！！！！！！！
     constructor(public http: HttpService) {
     }
 
@@ -24,18 +25,7 @@ export class CategoryService {
     }
 
     update(submitBody: { id: number, name: string }) {
-        const observable = this.http.put('/admin/category/update', submitBody, false);
-        observable.subscribe(data => {
-            if (data.code === 0) {
-                // tslint:disable-next-line:prefer-for-of
-                for (let i = 0; i < this.categories.length; i++) {
-                    if (this.categories[i].id === submitBody.id) {
-                        this.categories[i].name = submitBody.name;
-                    }
-                }
-            }
-        });
-        return observable;
+        return this.http.put('/admin/category/update', submitBody, false);
     }
 
     create(nameStr: string) {
@@ -43,7 +33,6 @@ export class CategoryService {
         observable.subscribe(data => {
             if (data.code === 0) {
                 this.categories.push(data.result);
-                console.log(this.categories);
             }
         });
         return observable;

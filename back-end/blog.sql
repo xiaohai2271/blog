@@ -5,7 +5,7 @@ USE blog;
 CREATE TABLE `article`
 (
     `a_id`             bigint(20) primary key auto_increment,
-    `a_title`          varchar(255) not null comment '文章标题',
+    `a_title`          varchar(255) not null unique comment '文章标题',
     `a_summary`        varchar(255) not null comment '文章摘要',
     `a_md_content`     longtext     not null comment '文章Markdown内容',
     `a_tags_id`        varchar(255) not null comment '标签id \',\'处于最尾端',
@@ -24,14 +24,14 @@ CREATE TABLE `article`
 CREATE TABLE `tag`
 (
     `tag_id`   bigint(20) primary key auto_increment,
-    `tag_name` varchar(255) not null,
+    `tag_name` varchar(255) unique not null,
     `articles` tinytext default null comment 'tag对应的文章id'
 ) comment '标签表';
 
 CREATE table `category`
 (
     `c_id`     bigint(20) primary key auto_increment,
-    `c_name`   varchar(255) not null,
+    `c_name`   varchar(255) unique not null,
     `articles` varchar(255) comment '分类下的文章'
 )comment '分类表';
 

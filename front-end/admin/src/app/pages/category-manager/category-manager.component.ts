@@ -49,6 +49,11 @@ export class CategoryManagerComponent implements OnInit {
             this.categoryService.update(this.updateReqBody).subscribe(data => {
                 if (data.code === 0) {
                     this.message.success('修改成功');
+                    for (let i = 0; i < this.categoryService.categories.length; i++) {
+                        if ( this.categoryService.categories[i].id === this.updateReqBody.id) {
+                            this.categoryService.categories[i].name = this.updateReqBody.name;
+                        }
+                    }
                 } else {
                     this.message.error('修改失败，原因：' + data.msg);
                 }
