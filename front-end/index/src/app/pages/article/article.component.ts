@@ -63,7 +63,7 @@ export class ArticleComponent implements OnInit {
       // TODO: 将TOC移至两侧
       // tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
       // gfm             : false,
-      tocDropdown: true,
+      tocDropdown: false,
       // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
       emoji: true,
       taskList: true,
@@ -71,6 +71,7 @@ export class ArticleComponent implements OnInit {
       flowChart: true,  // 默认不解析
       sequenceDiagram: true,  // 默认不解析
     });
+    this.checkALink();
   }
 
 
@@ -202,5 +203,19 @@ export class ArticleComponent implements OnInit {
 
   }
 
-
+  // 曲线救国 重新设置a的href值
+  checkALink() {
+    const as = document.getElementsByTagName('a');
+    let hrefStr: string = null ;
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < as.length; i++) {
+      hrefStr = decodeURI(as[i].href);
+      if (hrefStr.includes('#')) {
+        // 截取锚点名称
+        const anchorName: string = hrefStr.substr(hrefStr.indexOf('#'), hrefStr.length);
+        // 重新获取url 并拼接锚点名称
+        as[i].href = location.origin + location.pathname + anchorName;
+      }
+    }
+  }
 }
