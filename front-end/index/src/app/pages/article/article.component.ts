@@ -58,8 +58,9 @@ export class ArticleComponent implements OnInit {
       markdown: markdownContent,
       // htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
       htmlDecode: 'style,script,iframe',  // you can filter tags decode
-      // toc             : false,
-      // tocm            : true,    // Using [TOCM]
+       toc             : true,
+       tocm            : true,    // Using [TOCM]
+      // TODO: 将TOC移至两侧
       // tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
       // gfm             : false,
       tocDropdown: true,
