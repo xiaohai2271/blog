@@ -2,7 +2,7 @@ header {
   height: 50px;
   background-color: #ffffff;
   opacity: 0.8;
-  position: fixed;
+  position: absolute;
   z-index: 1;
   width: 100%;
 }
@@ -76,9 +76,10 @@ ul {
 @media only screen and (min-width: 768px) {
   /**导航栏*/
   .nav-desktop {
-    position: fixed;
+    position: absolute;
     width: auto;
     left: 50%;
+    top: 0;
     transform: translate(-50%, 0);
   }
 
