@@ -52,6 +52,9 @@ span {
 .countInfo i {
   margin-right: 5px;
 }
+.countInfo li{
+  list-style: none;
+}
 
 /* article */
 
