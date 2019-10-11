@@ -1,6 +1,8 @@
 <ng-template [ngIf]="article">
   <nz-spin [nzSpinning]="!loadOk">
-    <div class="article-content am-article">
+
+
+    <div class="article-content am-article" [ngClass]="{'noToc':!showToc}">
       <div style="text-align: center;word-break: break-all">
         <h1 class="article-title" id="title">{{article.title}}</h1>
       </div>
@@ -21,6 +23,12 @@
       <div class="article-text am-text-break am-article-bd">
         <!-- <div id="content" [innerHTML]="article.htmlContent">
         </div> -->
+        <div class="article-toc-main" *ngIf="showToc">
+          <!--   fixme： 不同文章切换时 无法生效      -->
+          <span><strong>目录：</strong></span><br>
+          <div id="article-toc" class="markdown-body editormd-preview-container">
+          </div>
+        </div>
         <div id="content">
           <textarea></textarea>
         </div>

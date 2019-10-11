@@ -49,6 +49,8 @@ export class ArticleComponent implements OnInit {
 
   public responseComment: CommentReq;
 
+  public showToc: boolean = true;
+
   /**
    * editor.md preview
    *
@@ -60,8 +62,7 @@ export class ArticleComponent implements OnInit {
       htmlDecode: 'style,script,iframe',  // you can filter tags decode
        toc             : true,
        tocm            : true,    // Using [TOCM]
-      // TODO: 将TOC移至两侧
-      // tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
+      tocContainer    : '#article-toc', // 自定义 ToC 容器层
       // gfm             : false,
       tocDropdown: false,
       // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
@@ -207,15 +208,21 @@ export class ArticleComponent implements OnInit {
   checkALink() {
     const as = document.getElementsByTagName('a');
     let hrefStr: string = null ;
+    let count: number = 0;
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < as.length; i++) {
       hrefStr = decodeURI(as[i].href);
-      if (hrefStr.includes('#')) {
+      // console.log(as[i].getAttribute('level'));
+      if (as[i].getAttribute('level') != null) {
         // 截取锚点名称
         const anchorName: string = hrefStr.substr(hrefStr.indexOf('#'), hrefStr.length);
         // 重新获取url 并拼接锚点名称
         as[i].href = location.origin + location.pathname + anchorName;
+        count++;
       }
+    }
+    if (count === 0) {
+        this.showToc = false;
     }
   }
 }
