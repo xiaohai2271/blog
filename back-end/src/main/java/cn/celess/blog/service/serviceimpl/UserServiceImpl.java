@@ -92,7 +92,12 @@ public class UserServiceImpl implements UserService {
         if (loginReq == null) {
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);
         }
-
+        if (!RegexUtil.emailMatch(loginReq.getEmail())) {
+            throw new MyException(ResponseEnum.PARAMETERS_EMAIL_ERROR);
+        }
+        if (!RegexUtil.pwdMatch(loginReq.getPassword())) {
+            throw new MyException(ResponseEnum.PARAMETERS_PWD_ERROR);
+        }
         //获取redis缓存中登录失败次数
         String s = redisUtil.get(loginReq.getEmail() + "-passwordWrongTime");
         if (s != null) {
