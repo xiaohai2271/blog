@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
         String s = redisUtil.get(loginReq.getEmail() + "-passwordWrongTime");
         if (s != null) {
             if (Integer.parseInt(s) == 5) {
-                throw new MyException(ResponseEnum.LOGIN_LATER);
+                throw new MyException(ResponseEnum.LOGIN_LATER, loginReq.getEmail());
             }
         }
         Subject subject = SecurityUtils.getSubject();
