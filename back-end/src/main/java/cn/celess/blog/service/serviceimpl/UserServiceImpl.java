@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel update(String desc, String displayName) {
-        User user = GetUserInfoBySessionUtil.get();
+        User user = SessionUserUtil.get();
         user.setDesc(desc);
         user.setDisplayName(displayName);
 
@@ -182,17 +182,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object updateUserAavatarImg(InputStream is, String mime) {
-        User user = GetUserInfoBySessionUtil.get();
+        User user = SessionUserUtil.get();
         QiniuResponse upload = qiniuService.uploadFile(is, user.getEmail() + "_" + user.getId() + mime.toLowerCase());
         user.setAvatarImgUrl(upload.key);
         userMapper.updateAvatarImgUrl(upload.key, user.getId());
-        GetUserInfoBySessionUtil.set(user);
+        SessionUserUtil.set(user);
         return ResponseUtil.success(user.getAvatarImgUrl());
     }
 
     @Override
     public UserModel getUserInfoBySession() {
-        User user = GetUserInfoBySessionUtil.get();
+        User user = SessionUserUtil.get();
         return trans(user);
     }
 
@@ -289,7 +289,7 @@ public class UserServiceImpl implements UserService {
             userMapper.updateEmailStatus(email, true);
             redisUtil.delete(user.getEmail() + "-verify");
             user.setEmailStatus(true);
-            GetUserInfoBySessionUtil.set(user);
+            SessionUserUtil.set(user);
             return "验证成功";
         } else {
             throw new MyException(ResponseEnum.FAILURE);
@@ -410,8 +410,8 @@ public class UserServiceImpl implements UserService {
         if (updateResult == 0) {
             throw new MyException(ResponseEnum.FAILURE);
         }
-        if (GetUserInfoBySessionUtil.get().getId().equals(userReq.getId())) {
-            GetUserInfoBySessionUtil.set(user);
+        if (SessionUserUtil.get().getId().equals(userReq.getId())) {
+            SessionUserUtil.set(user);
         }
         logger.info("修改了用户 [id={}] 的用户的资料", userReq.getId());
         return trans(user);

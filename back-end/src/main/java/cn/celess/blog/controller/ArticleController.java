@@ -5,7 +5,7 @@ import cn.celess.blog.entity.Response;
 import cn.celess.blog.entity.model.ArticleModel;
 import cn.celess.blog.entity.request.ArticleReq;
 import cn.celess.blog.service.ArticleService;
-import cn.celess.blog.util.GetUserInfoBySessionUtil;
+import cn.celess.blog.util.SessionUserUtil;
 import cn.celess.blog.util.ResponseUtil;
 import cn.celess.blog.util.SitemapGenerateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +78,7 @@ public class ArticleController {
         ArticleModel article = articleService.retrieveOneByID(articleId, is4update);
         if (article.getOpen()) {
             return ResponseUtil.success(article);
-        } else if (article.getAuthorId().equals(GetUserInfoBySessionUtil.get().getId())) {
+        } else if (article.getAuthorId().equals(SessionUserUtil.get().getId())) {
             return ResponseUtil.success(article);
         }
         return ResponseUtil.response(ResponseEnum.PERMISSION_ERROR, null);

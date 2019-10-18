@@ -13,7 +13,7 @@ import cn.celess.blog.mapper.TagMapper;
 import cn.celess.blog.service.ArticleService;
 import cn.celess.blog.service.UserService;
 import cn.celess.blog.util.DateFormatUtil;
-import cn.celess.blog.util.GetUserInfoBySessionUtil;
+import cn.celess.blog.util.SessionUserUtil;
 import cn.celess.blog.util.RegexUtil;
 import cn.celess.blog.util.StringFromHtmlUtil;
 import com.github.pagehelper.PageHelper;
@@ -90,7 +90,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setUrl(reqBody.getUrl());
         article.setType(reqBody.getType());
 
-        article.setAuthorId(GetUserInfoBySessionUtil.get().getId());
+        article.setAuthorId(SessionUserUtil.get().getId());
         article.setPublishDate(new Date());
 
         //防止出现 “null,xxx”这种情况
@@ -199,7 +199,7 @@ public class ArticleServiceImpl implements ArticleService {
         Article nextArticle = articleMapper.findArticleById(articleForDel.getNextArticleId());
 
         //对访问情况进行判断  非博主/非自己文章 拒绝访问
-        User user = GetUserInfoBySessionUtil.get();
+        User user = SessionUserUtil.get();
         if (!user.getRole().contains("admin") && !articleForDel.getAuthorId().equals(user.getId())) {
             throw new MyException(ResponseEnum.PERMISSION_ERROR);
         }
@@ -346,7 +346,7 @@ public class ArticleServiceImpl implements ArticleService {
         // 设置不定参数
         article.setReadingNumber(oldArticle.getReadingNumber());
         article.setPublishDate(oldArticle.getPublishDate());
-        article.setAuthorId(GetUserInfoBySessionUtil.get().getId());
+        article.setAuthorId(SessionUserUtil.get().getId());
         article.setPreArticleId(oldArticle.getPreArticleId());
         article.setNextArticleId(oldArticle.getNextArticleId());
         String str = StringFromHtmlUtil.getString(MDTool.markdown2Html(article.getMdContent()));
@@ -364,7 +364,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new MyException(ResponseEnum.ARTICLE_NOT_EXIST);
         }
         if (!article.getOpen()) {
-            User user = GetUserInfoBySessionUtil.getWithOutExc();
+            User user = SessionUserUtil.getWithOutExc();
             if (user == null || "user".equals(user.getRole())) {
                 throw new MyException(ResponseEnum.ARTICLE_NOT_PUBLIC);
             }
