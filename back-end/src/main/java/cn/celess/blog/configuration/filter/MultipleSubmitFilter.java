@@ -2,6 +2,7 @@ package cn.celess.blog.configuration.filter;
 
 import cn.celess.blog.enmu.ResponseEnum;
 import cn.celess.blog.entity.Response;
+import cn.celess.blog.util.RequestUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ public class MultipleSubmitFilter implements HandlerInterceptor {
         if (lastSubmitTime == null || completeUrl == null) {
             return true;
         }
-        if (System.currentTimeMillis() - lastSubmitTime < WAIT_TIME && getCompleteUrlAndMethod(request).equals(completeUrl)) {
+        if (System.currentTimeMillis() - lastSubmitTime < WAIT_TIME && RequestUtil.getCompleteUrlAndMethod(request).equals(completeUrl)) {
             // 请求参数和路径均相同 且请求时间间隔小于 WAIT_TIME
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -38,13 +39,6 @@ public class MultipleSubmitFilter implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         HttpSession session = request.getSession();
         session.setAttribute("lastSubmitTime", System.currentTimeMillis());
-        session.setAttribute("completeUrl&method", getCompleteUrlAndMethod(request));
-    }
-
-    private String getCompleteUrlAndMethod(HttpServletRequest request) {
-        // like this : /articles?page=1&count=5:GET
-        return request.getRequestURI() +
-                (request.getQueryString() == null ? "" : "?" + request.getQueryString()) +
-                ":" + request.getMethod();
+        session.setAttribute("completeUrl&method", RequestUtil.getCompleteUrlAndMethod(request));
     }
 }
