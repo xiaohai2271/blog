@@ -36,9 +36,10 @@ public class QiniuServiceImpl implements QiniuService {
          *    七牛的配置    *
          * ***** 必填 ******
          */
-        String accessKey = "";
-        String secretKey = "";
-        bucket = "";
+        // accessKeyString,secretKeyString,bucketString：请替换为自己的值
+        String accessKey = "accessKeyString";
+        String secretKey = "secretKeyString";
+        bucket = "bucketString";
 
         auth = Auth.create(accessKey, secretKey);
         uploadManager = new UploadManager(cfg);
