@@ -323,5 +323,8 @@ textarea {
     padding: 10px;
     background: #fff;
   }
+  .noToc{
+    width: 100% !important;
+  }
 
 }
