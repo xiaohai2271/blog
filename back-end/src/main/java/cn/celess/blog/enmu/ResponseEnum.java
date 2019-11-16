@@ -29,6 +29,7 @@ public enum ResponseEnum {
     USEREMAIL_NOT_VERIFY(332, "邮箱未验证"),
     LOGIN_LATER(350, "错误次数已达5次，请稍后再试"),
     PWD_SAME(360, "新密码与原密码相同"),
+    LOGIN_EXPIRED(370, "登陆过期"),
 
     //标签
     TAG_NOT_EXIST(401, "标签不存在"),

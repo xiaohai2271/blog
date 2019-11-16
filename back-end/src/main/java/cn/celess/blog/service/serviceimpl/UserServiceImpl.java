@@ -17,7 +17,6 @@ import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +51,8 @@ public class UserServiceImpl implements UserService {
     QiniuService qiniuService;
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    JwtUtil jwtUtil;
 
     @Override
     @Transient
@@ -105,19 +106,20 @@ public class UserServiceImpl implements UserService {
                 throw new MyException(ResponseEnum.LOGIN_LATER, loginReq.getEmail());
             }
         }
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(loginReq.getEmail(), MD5Util.getMD5(loginReq.getPassword()), loginReq.getIsRememberMe());
         User user = null;
-        try {
-            //TODO::JWT
-            subject.login(token);
-            logger.info("====> {}  进行权限认证  状态：登录成功 <====", token.getUsername());
-            user = userMapper.findByEmail(loginReq.getEmail());
+        user = userMapper.findByEmail(loginReq.getEmail());
+        String token = null;
+        // 密码比对
+        if (user.getPwd().equals(MD5Util.getMD5(loginReq.getPassword()))) {
+            logger.info("====> {}  进行权限认证  状态：登录成功 <====", loginReq.getEmail());
             userMapper.updateLoginTime(loginReq.getEmail(), new Date());
-            subject.getSession().setAttribute("userInfo", user);
             redisUtil.delete(loginReq.getEmail() + "-passwordWrongTime");
-        } catch (Exception e) {
-            logger.info("====> {}  进行权限认证  状态：登录失败 <====", token.getUsername());
+            // redis 标记
+            redisUtil.setEx(loginReq.getEmail() + "-login", JSONObject.fromObject(user).toString(), JwtUtil.EXPIRATION_TIME, TimeUnit.MILLISECONDS);
+            token = jwtUtil.generateToken(user);
+            System.out.println(token);
+        } else {
+            logger.info("====> {}  进行权限认证  状态：登录失败 <====", loginReq.getEmail());
             request.getSession().removeAttribute("code");
             //登录失败
             //设置登录失败的缓存
@@ -132,7 +134,6 @@ public class UserServiceImpl implements UserService {
             redisUtil.setEx(loginReq.getEmail() + "-passwordWrongTime", count + "", 2, TimeUnit.HOURS);
             throw new MyException(ResponseEnum.LOGIN_FAILURE);
         }
-
         return trans(user);
 
     }

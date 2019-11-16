@@ -1,5 +1,6 @@
 package cn.celess.blog.configuration;
 
+import cn.celess.blog.configuration.filter.AuthenticationFilter;
 import cn.celess.blog.configuration.filter.MultipleSubmitFilter;
 import cn.celess.blog.configuration.filter.VisitorRecord;
 import cn.celess.blog.configuration.listener.SessionListener;
@@ -19,14 +20,22 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MultipleSubmitFilter()).addPathPatterns("/*");
-        registry.addInterceptor(new VisitorRecord()).addPathPatterns("/*");
+        registry.addInterceptor(authenticationFilter()).addPathPatterns("/**");
+
+        // visitor 输出信息杂乱 暂时放弃使用
+//        registry.addInterceptor(new VisitorRecord()).addPathPatterns("/*");
     }
 
-    // session listener register bean
     @Bean
-    public ServletListenerRegistrationBean<SessionListener> servletListenerRegistrationBean() {
-        ServletListenerRegistrationBean<SessionListener> slrBean = new ServletListenerRegistrationBean<SessionListener>();
-        slrBean.setListener(new SessionListener());
-        return slrBean;
+    public AuthenticationFilter authenticationFilter() {
+        return new AuthenticationFilter();
     }
+
+//    // session listener register bean
+//    @Bean
+//    public ServletListenerRegistrationBean<SessionListener> servletListenerRegistrationBean() {
+//        ServletListenerRegistrationBean<SessionListener> slrBean = new ServletListenerRegistrationBean<SessionListener>();
+//        slrBean.setListener(new SessionListener());
+//        return slrBean;
+//    }
 }
