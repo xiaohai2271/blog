@@ -35,4 +35,6 @@ public class UserModel {
     private String recentlyLandedDate;
 
     private String role = "user";
+
+    private String token;
 }

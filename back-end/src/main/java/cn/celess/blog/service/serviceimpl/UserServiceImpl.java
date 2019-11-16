@@ -16,8 +16,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +51,8 @@ public class UserServiceImpl implements UserService {
     RedisUtil redisUtil;
     @Autowired
     JwtUtil jwtUtil;
+    @Autowired
+    RedisUserUtil redisUserUtil;
 
     @Override
     @Transient
@@ -117,7 +117,6 @@ public class UserServiceImpl implements UserService {
             // redis 标记
             redisUtil.setEx(loginReq.getEmail() + "-login", JSONObject.fromObject(user).toString(), JwtUtil.EXPIRATION_TIME, TimeUnit.MILLISECONDS);
             token = jwtUtil.generateToken(user);
-            System.out.println(token);
         } else {
             logger.info("====> {}  进行权限认证  状态：登录失败 <====", loginReq.getEmail());
             request.getSession().removeAttribute("code");
@@ -134,22 +133,28 @@ public class UserServiceImpl implements UserService {
             redisUtil.setEx(loginReq.getEmail() + "-passwordWrongTime", count + "", 2, TimeUnit.HOURS);
             throw new MyException(ResponseEnum.LOGIN_FAILURE);
         }
-        return trans(user);
+        UserModel trans = trans(user);
+        trans.setToken(token);
+        return trans;
 
     }
 
     @Override
     public Object logout() {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-        request.getSession().removeAttribute("code");
-        request.getSession().removeAttribute("userInfo");
+        String token = request.getHeader("Authorization");
+        if (token == null || token.isEmpty()) {
+            return "注销登录成功";
+        }
+        String email = jwtUtil.getUsernameFromToken(token);
+        if (redisUtil.hasKey(email + "-login")) {
+            redisUtil.delete(email + "-login");
+        }
         return "注销登录成功";
     }
 
     @Override
     public UserModel update(String desc, String displayName) {
-        User user = SessionUserUtil.get();
+        User user = redisUserUtil.get(request);
         user.setDesc(desc);
         user.setDisplayName(displayName);
 
@@ -183,17 +188,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object updateUserAavatarImg(InputStream is, String mime) {
-        User user = SessionUserUtil.get();
+        User user = redisUserUtil.get(request);
         QiniuResponse upload = qiniuService.uploadFile(is, user.getEmail() + "_" + user.getId() + mime.toLowerCase());
         user.setAvatarImgUrl(upload.key);
         userMapper.updateAvatarImgUrl(upload.key, user.getId());
-        SessionUserUtil.set(user);
+        redisUserUtil.set(user);
         return ResponseUtil.success(user.getAvatarImgUrl());
     }
 
     @Override
     public UserModel getUserInfoBySession() {
-        User user = SessionUserUtil.get();
+        User user = redisUserUtil.get(request);
         return trans(user);
     }
 
@@ -290,7 +295,7 @@ public class UserServiceImpl implements UserService {
             userMapper.updateEmailStatus(email, true);
             redisUtil.delete(user.getEmail() + "-verify");
             user.setEmailStatus(true);
-            SessionUserUtil.set(user);
+            redisUserUtil.set(user);
             return "验证成功";
         } else {
             throw new MyException(ResponseEnum.FAILURE);
@@ -411,8 +416,8 @@ public class UserServiceImpl implements UserService {
         if (updateResult == 0) {
             throw new MyException(ResponseEnum.FAILURE);
         }
-        if (SessionUserUtil.get().getId().equals(userReq.getId())) {
-            SessionUserUtil.set(user);
+        if (redisUserUtil.get(request).getId().equals(userReq.getId())) {
+            redisUserUtil.set(user);
         }
         logger.info("修改了用户 [id={}] 的用户的资料", userReq.getId());
         return trans(user);

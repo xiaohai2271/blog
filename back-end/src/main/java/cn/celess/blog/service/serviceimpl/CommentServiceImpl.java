@@ -10,7 +10,7 @@ import cn.celess.blog.mapper.CommentMapper;
 import cn.celess.blog.service.CommentService;
 import cn.celess.blog.service.UserService;
 import cn.celess.blog.util.DateFormatUtil;
-import cn.celess.blog.util.SessionUserUtil;
+import cn.celess.blog.util.RedisUserUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +35,8 @@ public class CommentServiceImpl implements CommentService {
     ArticleMapper articleMapper;
     @Autowired
     HttpServletRequest request;
+    @Autowired
+    RedisUserUtil redisUserUtil;
 
     @Override
     public CommentModel create(CommentReq reqBody) {
@@ -42,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
         if (reqBody == null) {
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);
         }
-        long authorID = SessionUserUtil.get().getId();
+        long authorID = redisUserUtil.get(request).getId();
         Comment pComment = commentMapper.findCommentById(reqBody.getPId());
         //不是一级评论
         if (reqBody.getPId() != -1 && pComment == null) {
@@ -139,7 +141,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public PageInfo<CommentModel> retrievePageByAuthor(Boolean isComment, int page, int count) {
         PageHelper.startPage(page, count);
-        List<Comment> commentList = commentMapper.findAllByAuthorIDAndType(SessionUserUtil.get().getId(), isComment);
+        List<Comment> commentList = commentMapper.findAllByAuthorIDAndType(redisUserUtil.get(request).getId(), isComment);
         PageInfo pageInfo = new PageInfo(commentList);
         pageInfo.setList(list2List(commentList));
         return pageInfo;

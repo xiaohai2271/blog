@@ -10,8 +10,6 @@ import cn.celess.blog.util.RedisUtil;
 import cn.celess.blog.util.ResponseUtil;
 import cn.celess.blog.util.VeriCodeUtil;
 import net.sf.json.JSONObject;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +42,8 @@ public class Other {
     QiniuService qiniuService;
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    HttpServletRequest request;
 
 
     @GetMapping("/counts")
@@ -87,8 +87,7 @@ public class Other {
     @GetMapping(value = "/imgCode", produces = MediaType.IMAGE_PNG_VALUE)
     public void getImg(HttpServletResponse response) throws IOException {
         Object[] obj = VeriCodeUtil.createImage();
-        Subject subject = SecurityUtils.getSubject();
-        subject.getSession().setAttribute("code", obj[0]);
+        request.getSession().setAttribute("code", obj[0]);
         //将图片输出给浏览器
         BufferedImage image = (BufferedImage) obj[1];
         response.setContentType("image/png");
@@ -106,8 +105,7 @@ public class Other {
      */
     @PostMapping("/verCode")
     public Response verCode(@RequestParam("code") String code, HttpServletRequest request) {
-        Subject subject = SecurityUtils.getSubject();
-        subject.getSession().setAttribute("verImgCodeStatus", false);
+        request.getSession().setAttribute("verImgCodeStatus", false);
         String codeStr = (String) request.getSession().getAttribute("code");
         if (code == null) {
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);

@@ -1,11 +1,13 @@
 package cn.celess.blog.configuration.listener;
 
 import cn.celess.blog.entity.User;
-import cn.celess.blog.util.SessionUserUtil;
+import cn.celess.blog.util.RedisUserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.util.HashMap;
@@ -17,6 +19,10 @@ import java.util.HashMap;
  */
 @WebListener
 public class SessionListener implements HttpSessionListener {
+    @Autowired
+    RedisUserUtil redisUserUtil;
+    @Autowired
+    HttpServletRequest request;
     private static final Logger logger = LoggerFactory.getLogger(SessionListener.class);
 
     @Override
@@ -33,7 +39,7 @@ public class SessionListener implements HttpSessionListener {
         HashMap<String, Integer> visitDetail = (HashMap<String, Integer>) se.getSession().getAttribute("visitDetail");
         StringBuilder sb = new StringBuilder();
         sb.append("ip => ").append(se.getSession().getAttribute("ip"));
-        User user = SessionUserUtil.getWithOutExc(se.getSession());
+        User user = redisUserUtil.get(request);
         sb.append("\t登录情况 => ");
         sb.append(user == null ? "游客访问" : user.getEmail());
         visitDetail.forEach((s, integer) -> {

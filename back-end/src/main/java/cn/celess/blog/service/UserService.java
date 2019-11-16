@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.List;
 

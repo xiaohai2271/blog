@@ -5,11 +5,13 @@ import cn.celess.blog.entity.Response;
 import cn.celess.blog.entity.model.ArticleModel;
 import cn.celess.blog.entity.request.ArticleReq;
 import cn.celess.blog.service.ArticleService;
-import cn.celess.blog.util.SessionUserUtil;
+import cn.celess.blog.util.RedisUserUtil;
 import cn.celess.blog.util.ResponseUtil;
 import cn.celess.blog.util.SitemapGenerateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author : xiaohai
@@ -21,6 +23,8 @@ public class ArticleController {
     ArticleService articleService;
     @Autowired
     SitemapGenerateUtil sitemapGenerateUtil;
+    @Autowired
+    RedisUserUtil redisUserUtil;
 
     /**
      * 新建一篇文章
@@ -74,11 +78,12 @@ public class ArticleController {
      */
     @GetMapping("/article/articleID/{articleID}")
     public Response retrieveOneById(@PathVariable("articleID") long articleId,
-                                    @RequestParam(value = "update", defaultValue = "false") boolean is4update) {
+                                    @RequestParam(value = "update", defaultValue = "false") boolean is4update,
+                                    HttpServletRequest request) {
         ArticleModel article = articleService.retrieveOneByID(articleId, is4update);
         if (article.getOpen()) {
             return ResponseUtil.success(article);
-        } else if (article.getAuthorId().equals(SessionUserUtil.get().getId())) {
+        } else if (article.getAuthorId().equals(redisUserUtil.get(request).getId())) {
             return ResponseUtil.success(article);
         }
         return ResponseUtil.response(ResponseEnum.PERMISSION_ERROR, null);
