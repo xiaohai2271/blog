@@ -33,7 +33,7 @@ public class AuthenticationFilter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String path = request.getServletPath();
+        String path = request.getRequestURI();
         int indexOf = path.indexOf("/", 1);
         String rootPath = indexOf == -1 ? path : path.substring(0, indexOf);
         // 不需要鉴权的路径
