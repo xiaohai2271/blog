@@ -6,6 +6,8 @@ import cn.celess.blog.util.JwtUtil;
 import cn.celess.blog.util.RedisUtil;
 import cn.celess.blog.util.ResponseUtil;
 import net.sf.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -26,7 +28,9 @@ public class AuthenticationFilter implements HandlerInterceptor {
     @Autowired
     UserService userService;
 
-    private static final String USER_PREFIX = "/usr";
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
+
+    private static final String USER_PREFIX = "/user";
     private static final String ADMIN_PREFIX = "/admin";
     private static final String ROLE_ADMIN = "admin";
     private static final String ROLE_USER = "user";
@@ -44,12 +48,12 @@ public class AuthenticationFilter implements HandlerInterceptor {
 
         String jwtStr = request.getHeader("Authorization");
         if (jwtStr == null || jwtStr.isEmpty()) {
-            return writeResponse(ResponseEnum.HAVE_NOT_LOG_IN, response);
+            return writeResponse(ResponseEnum.HAVE_NOT_LOG_IN, response, request);
         }
         String email = jwtUtil.getUsernameFromToken(jwtStr);
         if (!redisUtil.hasKey(email + "-login") || jwtUtil.isTokenExpired(jwtStr)) {
             // 登陆过期
-            return writeResponse(ResponseEnum.LOGIN_EXPIRED, response);
+            return writeResponse(ResponseEnum.LOGIN_EXPIRED, response, request);
         }
         String role = userService.getUserRoleByEmail(email);
         if (role.equals(ROLE_ADMIN)) {
@@ -60,12 +64,13 @@ public class AuthenticationFilter implements HandlerInterceptor {
             // user  not admin page
             return true;
         }
-        return writeResponse(ResponseEnum.PERMISSION_ERROR, response);
+        return writeResponse(ResponseEnum.PERMISSION_ERROR, response, request);
     }
 
-    private boolean writeResponse(ResponseEnum e, HttpServletResponse response) {
+    private boolean writeResponse(ResponseEnum e, HttpServletResponse response, HttpServletRequest request) {
         response.setHeader("Content-Type", "application/json;charset=UTF-8");
         try {
+            logger.info("鉴权失败，[code:{},msg:{},path:{}]", e.getCode(), e.getMsg(), request.getRequestURI() + "?" + request.getQueryString());
             response.getWriter().println(JSONObject.fromObject(ResponseUtil.response(e, null)));
         } catch (IOException ex) {
             ex.printStackTrace();
