@@ -104,7 +104,7 @@ public class UserController {
     }
 
     @PutMapping("/admin/user")
-    public Response setRole(@RequestBody UserReq user) {
+    public Response updateInfoByAdmin(@RequestBody UserReq user) {
         return ResponseUtil.success(userService.adminUpdate(user));
     }
 
