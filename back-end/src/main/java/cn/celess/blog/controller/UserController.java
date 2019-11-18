@@ -114,7 +114,7 @@ public class UserController {
     }
 
     @GetMapping("/emailStatus/{email}")
-    public Response getAllUser(@PathVariable("email") String email) {
+    public Response getEmailStatus(@PathVariable("email") String email) {
         return ResponseUtil.success(userService.getStatusOfEmail(email));
     }
 
