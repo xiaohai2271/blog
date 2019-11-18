@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService {
         user.setDisplayName(displayName);
 
         userMapper.updateInfo(desc, displayName, user.getId());
-        request.getSession().setAttribute("userInfo", user);//更新session
+        redisUserUtil.set(user);
         return trans(user);
     }
 
@@ -392,7 +392,7 @@ public class UserServiceImpl implements UserService {
             if (userReq.getPwd().length() < 6 || userReq.getPwd().length() > 16) {
                 throw new MyException(ResponseEnum.PASSWORD_TOO_SHORT_OR_LONG);
             }
-            if (RegexUtil.pwdMatch(userReq.getPwd())) {
+            if (!RegexUtil.pwdMatch(userReq.getPwd())) {
                 throw new MyException(ResponseEnum.PARAMETERS_PWD_ERROR);
             }
             user.setPwd(MD5Util.getMD5(userReq.getPwd()));
@@ -409,6 +409,7 @@ public class UserServiceImpl implements UserService {
             if (!RegexUtil.emailMatch(userReq.getEmail())) {
                 throw new MyException(ResponseEnum.PARAMETERS_EMAIL_ERROR);
             }
+            // TODO :: 邮件提醒
             user.setEmail(userReq.getEmail());
         }
         // 数据写入
