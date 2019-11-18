@@ -25,9 +25,9 @@ public class JwtUtil {
      */
     public static final long EXPIRATION_TIME = 432000000;
     /**
-     * JWT密码
+     * JWT 秘钥需自行设置不可泄露
      */
-    private static final String SECRET = "auisdfhoasdhfoasdhfuiasdfhnkzl;xc1651165165";
+    private static final String SECRET = "xxx";
 
 
     public String generateToken(User user) {
