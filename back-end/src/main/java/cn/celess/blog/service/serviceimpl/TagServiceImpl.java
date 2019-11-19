@@ -55,6 +55,9 @@ public class TagServiceImpl implements TagService {
         if (tag == null) {
             throw new MyException(ResponseEnum.TAG_NOT_EXIST);
         }
+        if (tag.getArticles()==null){
+            return tagMapper.delete(tagId) == 1;
+        }
         String[] articleArray = tag.getArticles().split(",");
         for (int i = 0; i < articleArray.length; i++) {
             if (articleArray[i] == null || "".equals(articleArray)) {
