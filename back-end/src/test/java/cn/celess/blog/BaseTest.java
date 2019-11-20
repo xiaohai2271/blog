@@ -4,6 +4,7 @@ import cn.celess.blog.entity.request.LoginReq;
 import net.sf.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -87,5 +88,10 @@ public class BaseTest {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Test
+    public void test() {
+
     }
 }
