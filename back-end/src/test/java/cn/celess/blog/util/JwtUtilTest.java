@@ -11,7 +11,6 @@ public class JwtUtilTest extends BaseTest {
 
     @Autowired
     JwtUtil jwtUtil;
-    private String jwtExp = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhQGNlbGVzcy5jbiIsImV4cCI6MTU3NDMwNzIyNH0.kIyJPLqnzmQhh0NPXOsj6hdgbbqyfFBcD2nOUU2EiEyqPWAKao_hxSHAZQM_8FbXvvElgioebT8oj9jc2UYEdQ";
 
 
     @Test
@@ -21,28 +20,33 @@ public class JwtUtilTest extends BaseTest {
         String s = jwtUtil.generateToken(user);
         System.out.println(s);
         assertNotNull(s);
-        jwtExp = s;
     }
 
     @Test
     public void validateToken() {
         User user = new User();
         user.setEmail("a@celess.cn");
-        assertTrue(jwtUtil.validateToken(jwtExp, user));
+        assertTrue(jwtUtil.validateToken(createToken(), user));
     }
 
     @Test
     public void isTokenExpired() {
-        assertFalse(jwtUtil.isTokenExpired(jwtExp));
+        assertFalse(jwtUtil.isTokenExpired(createToken()));
     }
 
     @Test
     public void getUsernameFromToken() {
-        assertEquals("a@celess.cn", jwtUtil.getUsernameFromToken(jwtExp));
+        assertEquals("a@celess.cn", jwtUtil.getUsernameFromToken(createToken()));
     }
 
     @Test
     public void getExpirationDateFromToken() {
-        assertNotNull(jwtUtil.getExpirationDateFromToken(jwtExp));
+        assertNotNull(jwtUtil.getExpirationDateFromToken(createToken()));
+    }
+
+    private String createToken() {
+        User user = new User();
+        user.setEmail("a@celess.cn");
+        return jwtUtil.generateToken(user);
     }
 }
