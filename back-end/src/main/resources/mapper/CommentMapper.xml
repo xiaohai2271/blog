@@ -8,13 +8,13 @@
         <result column="author_id" property="authorID"/>
         <result column="co_content" property="content"/>
         <result column="co_date" property="date"/>
-        <result column="co_pid" property="pId"/>
+        <result column="co_pid" property="pid"/>
         <result column="co_response_id" property="responseId"/>
     </resultMap>
 
     <insert id="insert">
         insert into comment (co_article_id, is_comment, author_id, co_content, co_date, co_pid)
-        VALUES (#{articleID}, #{type}, #{authorID}, #{content}, #{date}, #{pId})
+        VALUES (#{articleID}, #{type}, #{authorID}, #{content}, #{date}, #{pid})
     </insert>
 
     <update id="updateContent">

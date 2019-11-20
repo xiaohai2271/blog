@@ -11,7 +11,7 @@ public class CommentReq {
     private Long id;
     private Boolean comment;
     private String content;
-    private Long pId;
+    private Long pid;
     private Long articleID;
     private String responseId;
 }

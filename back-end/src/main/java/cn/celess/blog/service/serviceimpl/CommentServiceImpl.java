@@ -45,10 +45,16 @@ public class CommentServiceImpl implements CommentService {
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);
         }
         long authorID = redisUserUtil.get(request).getId();
-        Comment pComment = commentMapper.findCommentById(reqBody.getPId());
+        Comment pComment = null;
+        if (reqBody.getPid() != null && reqBody.getPid() != -1) {
+            pComment = commentMapper.findCommentById(reqBody.getPid());
+        }
+        if (reqBody.getPid() == null) {
+            reqBody.setPid(-1L);
+        }
         //不是一级评论
-        if (reqBody.getPId() != -1 && pComment == null) {
-        //父评论不存在
+        if (reqBody.getPid() != -1 && pComment == null) {
+            //父评论不存在
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);
         }
         Comment comment = new Comment();
@@ -64,13 +70,13 @@ public class CommentServiceImpl implements CommentService {
             comment.setArticleID(-1L);
         }
         comment.setContent(reqBody.getContent());
-        comment.setPId(reqBody.getPId());
+        comment.setPid(reqBody.getPid());
         comment.setDate(new Date());
         comment.setResponseId("");
         commentMapper.insert(comment);
         comment = commentMapper.getLastestComment();
-        if (reqBody.getPId() != -1) {
-            commentMapper.updateResponder(pComment.getResponseId() + comment.getId() + ",", reqBody.getPId());
+        if (reqBody.getPid() != -1) {
+            commentMapper.updateResponder(pComment.getResponseId() + comment.getId() + ",", reqBody.getPid());
         }
         return trans(comment);
     }
@@ -108,6 +114,7 @@ public class CommentServiceImpl implements CommentService {
         PageHelper.startPage(page, count);
         List<Comment> commentList = commentMapper.findAllByType(isComment);
         PageInfo pageInfo = new PageInfo(commentList);
+        pageInfo.setList(list2List(commentList));
         return pageInfo;
     }
 
@@ -173,7 +180,7 @@ public class CommentServiceImpl implements CommentService {
         commentModel.setArticleID(comment.getArticleID());
         commentModel.setDate(DateFormatUtil.get(comment.getDate()));
         commentModel.setResponseId(comment.getResponseId());
-        commentModel.setPId(comment.getPId());
+        commentModel.setPid(comment.getPid());
         commentModel.setAuthorName(userService.getNameById(comment.getAuthorID()));
         commentModel.setAuthorAvatarImgUrl("http://cdn.celess.cn/" + userService.getAvatarImg(comment.getAuthorID()));
 

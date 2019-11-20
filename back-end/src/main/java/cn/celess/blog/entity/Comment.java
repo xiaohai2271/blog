@@ -35,6 +35,6 @@ public class Comment {
     /**
      * 评论的父ID
      */
-    private Long pId;
+    private Long pid;
 
 }

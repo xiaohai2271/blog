@@ -126,7 +126,7 @@ public class CommentControllerTest extends BaseTest {
         c.setType(true);
         c.setAuthorID(2L);
         c.setDate(new Date());
-        c.setPId(-1L);
+        c.setPid(-1L);
         commentMapper.insert(c);
         Comment comment = commentMapper.getLastestComment();
         // 接口测试
@@ -149,7 +149,7 @@ public class CommentControllerTest extends BaseTest {
         Comment comment = commentMapper.getLastestComment();
         CommentReq commentReq = new CommentReq();
         commentReq.setId(comment.getId());
-        commentReq.setPid(comment.getPId());
+        commentReq.setPid(comment.getPid());
         commentReq.setContent(UUID.randomUUID().toString());
         commentReq.setArticleID(comment.getArticleID());
         // 不合法数据 setResponseId

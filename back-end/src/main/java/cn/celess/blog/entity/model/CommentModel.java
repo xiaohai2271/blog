@@ -51,7 +51,7 @@ public class CommentModel {
     /**
      * 评论的父ID
      */
-    private long pId = -1;
+    private long pid = -1;
 
 
 }
