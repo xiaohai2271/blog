@@ -64,6 +64,7 @@ public class LinksController {
     @PostMapping("/apply")
     public Response apply(@RequestParam("name") String name,
                           @RequestParam("url") String url) {
+        // TODO :: 弃用发送邮件的方式, 对此接口进行调用次数限制，避免被滥用
         if (name == null || name.replaceAll(" ", "").isEmpty()) {
             return ResponseUtil.response(ResponseEnum.PARAMETERS_ERROR, null);
         }
@@ -74,8 +75,8 @@ public class LinksController {
         message.setSubject("友链申请：" + name);
         message.setTo("a@celess.cn");
         message.setText("name:" + name + "\nurl:" + url + "\n" + DateFormatUtil.getNow());
-        Boolean send = mailService.AsyncSend(message);
-        return ResponseUtil.success("");
+        Boolean send = mailService.send(message);
+        return send ? ResponseUtil.success("") : ResponseUtil.failure("");
 
     }
 }
