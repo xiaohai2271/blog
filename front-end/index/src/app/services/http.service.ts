@@ -11,20 +11,25 @@ export class HttpService {
 
   constructor(private http: HttpClient) {
     this.host = environment.host;
+    const item = localStorage.getItem('token');
+    this.token = item == null ? '' : item;
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        Accept: '*/*',
+        Authorization: this.token
+      }),
+      withCredentials: true
+    };
   }
 
   // 请求的主机地址
   public host: string;
+  private token: string;
 
   /**
    * http请求配置
    */
-  private httpOptions: object = {
-    header: new HttpHeaders({
-      'Accept': '*/*',
-    }),
-    withCredentials: true
-  };
+  private httpOptions: object;
 
   /**
    * get 请求
@@ -43,8 +48,9 @@ export class HttpService {
   post(path: string, reqBody: object, isJson: boolean): Observable<Data> {
     const Options = {
       headers: new HttpHeaders({
-        'Accept': '*/*',
-        'Content-Type': isJson ? 'application/json' : 'application/x-www-form-urlencoded'
+        Accept: '*/*',
+        Authorization: this.token,
+        ContentType: isJson ? 'application/json' : 'application/x-www-form-urlencoded'
       }),
       withCredentials: true
     };
@@ -87,5 +93,18 @@ export class HttpService {
       throw new Error('路径不合法');
     }
     return this.host + path;
+  }
+
+  setToken(t: string) {
+    if (t == null) {
+      return;
+    }
+    localStorage.setItem('token', t);
+    this.token = t;
+  }
+
+  removeToken() {
+    localStorage.removeItem('token');
+    this.token = ''
   }
 }

@@ -40,6 +40,7 @@ export class UserService {
         this.http.get('/logout').subscribe((data: any) => {
             if (data.code === 0) {
                 this.userInfo = null;
+                this.http.removeToken();
             }
         });
     }

@@ -46,6 +46,7 @@ export class UserService {
     this.http.get('/logout').subscribe((data: any) => {
       if (data.code === 0) {
         this.userInfo = null;
+        this.http.removeToken();
       }
     });
   }
@@ -64,6 +65,7 @@ export class UserService {
       if (data.code === 0) {
         this.userInfo = data.result;
         this.loginModalVisible = false;
+        this.http.setToken(data.result.token);
       }
     });
     return observable;
