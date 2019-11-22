@@ -23,20 +23,25 @@ public class JwtUtil {
     /**
      * 5天(毫秒)
      */
-    public static final long EXPIRATION_TIME = 432000000;
+    public static final long EXPIRATION_LONG_TIME = 432000000;
+
+    /**
+     * 两小时（毫秒）
+     */
+    public static final long EXPIRATION_SHORT_TIME = 7200000;
     /**
      * JWT 秘钥需自行设置不可泄露
      */
     private static final String SECRET = "xxx";
 
 
-    public String generateToken(User user) {
+    public String generateToken(User user, boolean isRemember) {
         Map<String, Object> claims = new HashMap<>(16);
         claims.put(CLAIM_KEY_USERNAME, user.getEmail());
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(new Date(Instant.now().toEpochMilli() + EXPIRATION_TIME))
+                .setExpiration(new Date(Instant.now().toEpochMilli() + (isRemember ? EXPIRATION_LONG_TIME : EXPIRATION_SHORT_TIME)))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }

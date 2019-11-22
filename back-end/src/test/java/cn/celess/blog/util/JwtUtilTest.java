@@ -17,7 +17,7 @@ public class JwtUtilTest extends BaseTest {
     public void generateToken() {
         User user = new User();
         user.setEmail("a@celess.cn");
-        String s = jwtUtil.generateToken(user);
+        String s = jwtUtil.generateToken(user, true);
         System.out.println(s);
         assertNotNull(s);
     }
@@ -47,6 +47,6 @@ public class JwtUtilTest extends BaseTest {
     private String createToken() {
         User user = new User();
         user.setEmail("a@celess.cn");
-        return jwtUtil.generateToken(user);
+        return jwtUtil.generateToken(user, true);
     }
 }
