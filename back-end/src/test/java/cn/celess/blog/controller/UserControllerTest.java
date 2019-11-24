@@ -3,6 +3,7 @@ package cn.celess.blog.controller;
 import cn.celess.blog.BaseTest;
 import cn.celess.blog.entity.User;
 import cn.celess.blog.entity.model.UserModel;
+import cn.celess.blog.entity.request.LoginReq;
 import cn.celess.blog.entity.request.UserReq;
 import cn.celess.blog.mapper.UserMapper;
 import cn.celess.blog.util.MD5Util;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,9 +31,19 @@ public class UserControllerTest extends BaseTest {
     UserMapper userMapper;
 
     @Test
-    public void login() {
+    public void login() throws Exception {
         assertNotNull(userLogin());
         assertNotNull(adminLogin());
+        // 用户不存在
+        LoginReq req = new LoginReq();
+        req.setEmail("zh@celess.cn");
+        req.setPassword("123456789");
+        req.setIsRememberMe(false);
+        JSONObject loginReq = JSONObject.fromObject(req);
+        mockMvc.perform(post("/login").content(loginReq.toString()).contentType("application/json"))
+                .andDo(result ->
+                        assertEquals(USER_NOT_EXIST.getCode(), JSONObject.fromObject(result.getResponse().getContentAsString()).getInt(Code))
+                );
     }
 
     @Test
