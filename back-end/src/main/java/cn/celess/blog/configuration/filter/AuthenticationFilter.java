@@ -50,6 +50,9 @@ public class AuthenticationFilter implements HandlerInterceptor {
         if (jwtStr == null || jwtStr.isEmpty()) {
             return writeResponse(ResponseEnum.HAVE_NOT_LOG_IN, response, request);
         }
+        if (jwtUtil.isTokenExpired(jwtStr)) {
+            return writeResponse(ResponseEnum.LOGIN_EXPIRED, response, request);
+        }
         String email = jwtUtil.getUsernameFromToken(jwtStr);
         if (!redisUtil.hasKey(email + "-login") || jwtUtil.isTokenExpired(jwtStr)) {
             // 登陆过期
