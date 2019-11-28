@@ -28,7 +28,7 @@ public interface VisitorService {
      * @param request HttpServletRequest
      * @return 返回状态  null: 访客信息已记录、爬虫
      */
-    Boolean addVisitor(HttpServletRequest request);
+    VisitorModel addVisitor(HttpServletRequest request);
 
     /**
      * 获取位置信息

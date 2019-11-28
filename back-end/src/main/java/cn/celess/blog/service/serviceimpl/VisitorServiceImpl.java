@@ -54,7 +54,7 @@ public class VisitorServiceImpl implements VisitorService {
     }
 
     @Override
-    public Boolean addVisitor(HttpServletRequest request) {
+    public VisitorModel addVisitor(HttpServletRequest request) {
         //新session
         if (!request.getSession().isNew()) {
             return null;
@@ -76,7 +76,10 @@ public class VisitorServiceImpl implements VisitorService {
             int count = Integer.parseInt(dayVisitCount) + 1;
             redisUtil.setEx("dayVisitCount", count + "", secondsLeftToday, TimeUnit.SECONDS);
         }
-        return visitorMapper.insert(visitor) == 1;
+        if (visitorMapper.insert(visitor) == 0) {
+            throw new MyException(ResponseEnum.FAILURE);
+        }
+        return trans(visitor);
     }
 
 

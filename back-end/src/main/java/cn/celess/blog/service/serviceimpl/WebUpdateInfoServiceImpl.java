@@ -27,12 +27,15 @@ public class WebUpdateInfoServiceImpl implements WebUpdateInfoService {
 
 
     @Override
-    public Boolean create(String info) {
+    public WebUpdateModel create(String info) {
         if (info == null || info.replaceAll(" ", "").isEmpty()) {
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);
         }
         WebUpdate webUpdate = new WebUpdate(info, new Date());
-        return webUpdateInfoMapper.insert(webUpdate) == 1;
+        if (webUpdateInfoMapper.insert(webUpdate) == 0) {
+            throw new MyException(ResponseEnum.FAILURE);
+        }
+        return trans(webUpdate);
     }
 
     @Override

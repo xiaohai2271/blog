@@ -47,9 +47,13 @@ public class VisitorControllerTest extends BaseTest {
 
     @Test
     public void add() throws Exception {
-        mockMvc.perform(post("/visit")).andDo(MockMvcResultHandlers.print()).andDo(result ->
-                assertEquals(SUCCESS.getCode(), JSONObject.fromObject(result.getResponse().getContentAsString()).getInt(Code))
-        );
+        mockMvc.perform(post("/visit")).andDo(MockMvcResultHandlers.print()).andDo(result -> {
+            JSONObject object = JSONObject.fromObject(result.getResponse().getContentAsString());
+            assertEquals(SUCCESS.getCode(), object.getInt(Code));
+            VisitorModel visitorModel = (VisitorModel) JSONObject.toBean(object.getJSONObject(Result), VisitorModel.class);
+            assertNotEquals(0, visitorModel.getId());
+            assertNotNull(visitorModel.getIp());
+        });
     }
 
     @Test
@@ -64,7 +68,7 @@ public class VisitorControllerTest extends BaseTest {
         String ip = "127.0.0.1";
         mockMvc.perform(get("/ip/" + ip)).andDo(MockMvcResultHandlers.print()).andDo(result -> {
             assertEquals(SUCCESS.getCode(), JSONObject.fromObject(result.getResponse().getContentAsString()).getInt(Code));
-            assertTrue("XX-XX-内网IP", JSONObject.fromObject(result.getResponse().getContentAsString()).containsKey(Result));
+            assertTrue(JSONObject.fromObject(result.getResponse().getContentAsString()).containsKey(Result));
         });
     }
 

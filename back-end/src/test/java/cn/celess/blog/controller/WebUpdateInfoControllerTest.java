@@ -28,7 +28,11 @@ public class WebUpdateInfoControllerTest extends BaseTest {
         mockMvc.perform(post("/admin/webUpdate/create?info=" + info).header("Authorization", adminLogin())).andDo(result -> {
             JSONObject object = JSONObject.fromObject(result.getResponse().getContentAsString());
             assertEquals(SUCCESS.getCode(), object.getInt(Code));
-            assertTrue(object.getBoolean(Result));
+            assertTrue(object.containsKey(Result));
+            WebUpdateModel webUpdateModel = (WebUpdateModel) JSONObject.toBean(object.getJSONObject(Result), WebUpdateModel.class);
+            assertEquals(info, webUpdateModel.getInfo());
+            assertNotNull(webUpdateModel.getTime());
+            assertNotEquals(0, webUpdateModel.getId());
         });
     }
 

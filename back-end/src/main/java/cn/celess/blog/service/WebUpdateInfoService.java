@@ -18,7 +18,7 @@ public interface WebUpdateInfoService {
      * @param info 更新内容
      * @return 创建状态
      */
-    Boolean create(String info);
+    WebUpdateModel create(String info);
 
     /**
      * 删除数据
