@@ -9,6 +9,9 @@
     <insert id="insert" parameterType="cn.celess.blog.entity.WebUpdate">
         insert into web_update(update_info, update_time)
         values (#{updateInfo}, #{updateTime})
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <update id="update">

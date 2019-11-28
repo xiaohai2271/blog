@@ -15,6 +15,9 @@
     <insert id="insert">
         insert into comment (co_article_id, is_comment, author_id, co_content, co_date, co_pid)
         VALUES (#{articleID}, #{type}, #{authorID}, #{content}, #{date}, #{pid})
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <update id="updateContent">

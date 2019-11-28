@@ -9,6 +9,9 @@
     <insert id="insert">
         insert into category (c_name, articles)
         values (#{name}, #{articles});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <update id="update">

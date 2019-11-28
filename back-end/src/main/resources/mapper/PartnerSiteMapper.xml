@@ -11,6 +11,9 @@
     <insert id="insert" parameterType="cn.celess.blog.entity.PartnerSite">
         insert into links (site_name, is_open, site_url)
         values (#{name}, #{open}, #{url})
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
 
     <update id="update" parameterType="cn.celess.blog.entity.PartnerSite">

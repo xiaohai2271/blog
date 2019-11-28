@@ -74,7 +74,6 @@ public class CommentServiceImpl implements CommentService {
         comment.setDate(new Date());
         comment.setResponseId("");
         commentMapper.insert(comment);
-        comment = commentMapper.getLastestComment();
         if (reqBody.getPid() != -1) {
             commentMapper.updateResponder(pComment.getResponseId() + comment.getId() + ",", reqBody.getPid());
         }

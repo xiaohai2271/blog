@@ -141,7 +141,6 @@ public class ArticleServiceImpl implements ArticleService {
             category1.setArticles("");
             category1.setName(reqBody.getCategory());
             categoryMapper.insert(category1);
-            category1 = categoryMapper.getLastestCategory();
         }
 
         article.setCategoryId(category1.getId());
@@ -149,7 +148,6 @@ public class ArticleServiceImpl implements ArticleService {
         //文章存数据库
         articleMapper.insert(article);
         //获取新增的文章
-        article = articleMapper.getLastestArticle();
 
         if (isUpdatePreArticle) {
             //更新上一篇文章的“下一篇文章ID”
@@ -176,7 +174,6 @@ public class ArticleServiceImpl implements ArticleService {
                 tag.setName(t);
                 tag.setArticles("");
                 tagMapper.insert(tag);
-                tag = tagMapper.getLastestTag();
             }
             tag.setArticles(tag.getArticles() + article.getId() + ",");
             article.setTagsId(article.getTagsId() + tag.getId() + ",");
@@ -314,7 +311,6 @@ public class ArticleServiceImpl implements ArticleService {
                 category1.setName(reqBody.getCategory());
                 category1.setArticles(reqBody.getId() + ",");
                 categoryMapper.insert(category1);
-                category1 = categoryMapper.getLastestCategory();
             }
             article.setCategoryId(category1.getId());
         } else {

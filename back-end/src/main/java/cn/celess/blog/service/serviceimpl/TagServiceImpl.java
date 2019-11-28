@@ -37,7 +37,7 @@ public class TagServiceImpl implements TagService {
         Tag tag = new Tag();
         tag.setName(name);
         tagMapper.insert(tag);
-        return tagMapper.getLastestTag();
+        return tag;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class TagServiceImpl implements TagService {
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);
         }
         tagMapper.insert(tag);
-        return tagMapper.getLastestTag();
+        return tag;
     }
 
     @Override

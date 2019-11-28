@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.setName(name);
         category.setArticles("");
         categoryMapper.insert(category);
-        return categoryMapper.getLastestCategory();
+        return category;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new MyException(ResponseEnum.PARAMETERS_ERROR);
         }
         categoryMapper.insert(category);
-        return categoryMapper.getLastestCategory();
+        return category;
     }
 
     @Override

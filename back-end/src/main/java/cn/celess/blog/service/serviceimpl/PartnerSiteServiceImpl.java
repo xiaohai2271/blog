@@ -52,7 +52,7 @@ public class PartnerSiteServiceImpl implements PartnerSiteService {
         }
         BeanUtils.copyProperties(reqBody, partnerSite);
         partnerMapper.insert(partnerSite);
-        return partnerMapper.getLastest();
+        return partnerSite;
     }
 
     @Override

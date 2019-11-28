@@ -24,6 +24,9 @@
                              a_summary, a_title, a_url)
         values (#{authorId}, #{categoryId}, #{tagsId}, #{mdContent}, #{publishDate},
                 #{summary}, #{title}, #{url})
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
     </insert>
     <delete id="delete">
         delete
